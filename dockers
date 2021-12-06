@@ -1,0 +1,2 @@
+docker run -v $PWD:/home -it --rm --name ansible-playground --entrypoint=/bin/bash --network host ansible-playground
+

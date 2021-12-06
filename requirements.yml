@@ -1,0 +1,6 @@
+---
+roles:
+  - name: markosamuli.pyenv
+    # version: v5.0.0
+  - name: geerlingguy.ruby
+  - name: suzuki-shunsuke.pyenv-module

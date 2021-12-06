@@ -3,7 +3,7 @@
   apt:
     name: 
       - build-essential
-      - ccache
+      # - ccache
       - cmake
       - curl
       - dconf-editor
@@ -59,8 +59,21 @@
     - core
     - pipx
 
-- name: install Homebrew
-  shell: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" 
+- name: Check if Homebrew is already installed
+  stat:
+    path: /usr/local/bin/brew
+  register: b
+  tags:
+    - install
+    - brew
+    - homebrew
+
+- name: Install Homebrew
+  shell: |
+    echo "Doing the thing!"
+    export CI=1
+    /bin/bash -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  when: not b.stat.exists
   tags:
     - install
     - brew
