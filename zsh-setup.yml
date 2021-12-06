@@ -1,0 +1,231 @@
+- name: Install ZSH
+  become_user: root
+  apt: name=zsh
+  tags: 
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+
+- name: Change shell to zsh
+  become_user: root
+  shell: sudo usermod --shell /usr/bin/zsh {{ user }}
+  tags:
+    - chsh
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+
+- name: Remove Oh-My-Zsh
+  shell: rm ~/.oh-my-zsh -rf
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - ohmyzsh
+    - never
+
+- name: Oh-My-Zsh
+  shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - ohmyzsh
+    - never
+
+- name: Install zsh-autosuggestions
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
+    dest: "{{ lookup('env', 'HOME') }}/.zsh/plugins/zsh-autosuggestions"
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - zsh-plugins
+
+- name: Install zsh-history-substring-search
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-history-substring-search.git'
+    dest: "{{ lookup('env', 'HOME') }}/.zsh/plugins/zsh-history-substring-search"
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - zsh-plugins
+
+- name: Install zsh-syntax-highlighting
+  ansible.builtin.git:
+    repo: 'https://github.com/zsh-users/zsh-syntax-highlighting.git'
+    dest: "{{ lookup('env', 'HOME') }}/.zsh/plugins/zsh-syntax-highlighting"
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - zsh-plugins
+
+- name: Install Starship
+  shell: |
+    curl -fsSL https://starship.rs/install.sh | bash -s -- -y
+    cat ~/.bashrc | grep -q 'eval "$(starship init bash)"' || echo 'eval "$(starship init bash)"' >> ~/.bashrc
+    cat ~/.zshrc | grep -q 'eval "$(starship init zsh)"' || echo 'eval "$(starship init zsh)"' >> ~/.zshrc
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+
+- name: Remove Existing Forgit
+  ansible.builtin.file:
+    Path: ~/.forgit
+    state: absent
+  ignore_errors: yes
+
+- name: Install Forgit
+  shell: |
+    git clone https://github.com/wfxr/forgit ~/.forgit
+    cat ~/.bashrc | grep -q 'source ~/.forgit/forgit.plugin.sh' || echo 'source ~/.forgit/forgit.plugin.zsh' >> ~/.bashrc
+    cat ~/.zshrc | grep -q 'source ~/.forgit/forgit.plugin.zsh' || echo 'source ~/.forgit/forgit.plugin.zsh' >> ~/.zshrc
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - forgit
+
+- name: Install Glow
+  shell: |
+    mkdir ~/downloads
+    pushd ~/downloads
+    rm -rf glow
+    GLOW_VERSION=$(curl --silent https://github.com/charmbracelet/glow/releases/latest | tr -d '"' | sed 's/^.*tag\///g' | sed 's/>.*$//g' | sed 's/^v//')
+    wget https://github.com/charmbracelet/glow/releases/download/v${GLOW_VERSION}/glow_${GLOW_VERSION}_linux_x86_64.tar.gz -O- -q | tar -zxf - -C ~/.local/bin
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - glow
+
+- name: Install GitUI
+  shell: |
+    GITUI_VERSION=$(curl --silent https://github.com/extrawurst/gitui/releases/latest | tr -d '"' | sed 's/^.*tag\///g' | sed 's/>.*$//g' | sed 's/^v//')
+    wget https://github.com/extrawurst/gitui/releases/download/v${GITUI_VERSION}/gitui-linux-musl.tar.gz -O- -q | tar -zxf - -C ~/.local/bin
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - gitui
+
+- name: Install GH
+  shell: |
+    GH_VERSION=$(curl --silent https://github.com/cli/cli/releases/latest | tr -d '"' | sed 's/^.*tag\///g' | sed 's/>.*$//g' | sed 's/^v//')
+    wget https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_amd64.tar.gz -O- -q | tar -zxf - -C /tmp
+    mv /tmp/gh_${GH_VERSION}_linux_amd64/bin/gh {{ lookup('env', 'HOME') }}/.local/bin/gh
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - gh
+
+- name: Install ripgrep
+  shell: | 
+    RIPGREP_VERSION=$(curl --silent https://github.com/BurntSushi/ripgrep/releases/latest | tr -d '"' | sed 's/^.*tag\///g' | sed 's/>.*$//g' | sed 's/^v//')
+    wget https://github.com/BurntSushi/ripgrep/releases/download/${RIPGREP_VERSION}/ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linuxmusl.tar.gz -O- -q | sudo tar -zxf - -C /tmp && sudo cp /tmp/ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linux-musl/rg /usr/bin/rg
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - ripgrep
+
+- name: Install dust
+  shell: | 
+    DUST_VERSION=$(curl --silent https://github.com/bootandy/dust/releases/latest | tr -d '"' | sed 's/^.*tag\///g' | sed 's/>.*$//g' | sed 's/^v//')
+    wget https://github.com/bootandy/dust/releases/download/v${DUST_VERSION}/dust-v${DUST_VERSION}-x86_64-unknown-linux-musl.tar.gz -O- -q | sudo tar -zxf - -C /tmp && sudo cp /tmp/dust-v${DUST_VERSION}-x86_64-unknown-linux-musl/dust /usr/bin/dust
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - dust
+
+- name: Install tmux
+  become_user: root
+  shell: |
+    TMUX_VERSION=$(curl --silent https://github.com/tmux/tmux/releases/latest | tr -d '"' | sed 's/^.*tag\///g' | sed 's/>.*$//g' | sed 's/^v//')
+    wget https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz -O- -q | tar -zxf - -C /tmp
+    cd /tmp/tmux-${TMUX_VERSION}
+    sudo ./configure
+    sudo make
+    sudo make install
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - tmux
+
+- name: install brow.sh
+  shell: |
+    cd /tmp
+    wget https://github.com/browsh-org/browsh/releases/download/v1.6.4/browsh_1.6.4_linux_amd64.deb
+    sudo apt install ./browsh_1.6.4_linux_amd64.deb
+    rm ./browsh_1.6.4_linux_amd64.deb
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - browsh
+
+- name: Install bat
+  shell: |
+    cd /tmp
+    BAT_VERSION=$(curl --silent https://github.com/sharkdp/bat/releases/latest | tr -d '"' | sed 's/^.*tag\///g' | sed 's/>.*$//g' | sed 's/^v//')
+    wget https://github.com/sharkdp/bat/releases/download/v${BAT_VERSION}/bat-v${BAT_VERSION}-x86_64-unknown-linux-gnu.tar.gz -q
+    tar -zxf bat-v${BAT_VERSION}-x86_64-unknown-linux-gnu.tar.gz
+    sudo cp bat-v${BAT_VERSION}-x86_64-unknown-linux-gnu/bat {{ lookup('env', 'HOME') }}/.local/bin/
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - zsh
+    - bat
+
+- name: Install mdp
+  shell: |
+    cd /tmp/
+    git clone https://github.com/visit1985/mdp.git
+    cd mdp
+    make
+    make install PREFIX="{{ lookup('env', 'HOME') }}/.local/bin"
+  tags:
+    - install
+    - productivity
+    - dotfiles
+    - zsh
+    - tmux
+    - mdp
+    - terminal
+    - never
+
+- name: Install fzf
+  shell: |
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
+        ~/.fzf/install --all
+  tags:
+    - install
+    - productivity
+    - dotfiles
+    - zsh
+    - fzf
+    - terminal-
