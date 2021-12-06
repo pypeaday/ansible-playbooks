@@ -1,0 +1,178 @@
+- name: Install packages
+  become_user: root
+  apt:
+    name:
+      - arandr
+      - picom
+      - flameshot
+      - gimp
+      - lxappearance
+      - pavucontrol
+      - rofi
+      - screenkey
+      - tldr
+      - vlc
+      - wireshark
+      - wmctrl
+      - xclip
+      - scrot
+  tags:
+    - install
+    - core
+    - core-apt
+- name: install polybar dependencies
+  become_user: root
+  apt: 
+    name:
+      - cmake
+      - cmake-data
+      - libcairo2-dev
+      - libjsoncpp-dev
+      - 'libxcb-*'
+      - libxcb-composite0-dev
+      - libxcb-ewmh-dev
+      - libxcb-randr0-dev
+      - libxcb1-dev
+      - python3-sphinx
+      - python3-xcbgen
+      - xcb-proto
+  tags: 
+    - core
+    - polybar
+- name: clone polybar
+  ansible.builtin.git:
+    repo: 'https://github.com/jaagr/polybar.git'
+    dest: "{{ lookup('env', 'HOME') }}/git/polybar"
+    update: no
+  tags:
+    - core
+    - obs
+    - polybar
+- name: install polybar
+  shell: |
+    sudo ln -s /usr/include/jsoncpp/json/ /usr/include/json
+    cd {{ lookup('env', 'HOME') }}/git/polybar
+    ./build.sh
+  tags:
+    - core
+    - polybar
+
+- name: clone v4l2loopback
+  ansible.builtin.git:
+    repo: 'https://github.com/umlaeute/v4l2loopback.git'
+    dest: "{{ lookup('env', 'HOME') }}/git/v4l2loopback"
+    update: no
+  tags:
+    - core
+    - obs
+    - v4l2loopback
+- name: Build 4v4l2loopback
+  shell: "cd {{ lookup('env', 'HOME') }}/git/v4l2loopback && make"
+  tags:
+    - core
+    - obs
+    - v4l2loopback
+- name: install v4l2loopback
+  shell: "cd {{ lookup('env', 'HOME') }}/git/v4l2loopback sudo make install"
+  tags:
+    - core
+    - obs
+    - v4l2loopback
+
+- name: rofimoji deps
+  apt: name={{item}}
+  become_user: root
+  with_items:
+    - fonts-emojione
+    - python3
+    - rofi
+    - xdotool
+    - xsel
+  tags:
+    - install
+    - dotfiles
+    - rofimoji
+
+- name: Setup rofimoji
+  shell: pipx install rofimoji --force
+  tags:
+    - install
+    - dotfiles
+    - rofimoji
+- name: Install signal
+  shell: |
+    # NOTE: These instructions only work for 64 bit Debian-based
+    # Linux distributions such as Ubuntu, Mint etc.
+    # 1. Install our official public software signing key
+    wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+    cat signal-desktop-keyring.gpg | sudo tee -a /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+    # 2. Add our repository to your list of repositories
+    echo 'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop-keyring.gpg] https://updates.signal.org/desktop/apt xenial main' |\
+      sudo tee -a /etc/apt/sources.list.d/signal-xenial.list
+    # 3. Update your package database and install signal
+    sudo apt update && sudo apt install signal-desktop
+  tags:
+    - signal
+
+- name: install screenkey dependencies
+  apt: name={{item}}
+  with_items:
+    - libx11-6
+    - python3-gi
+    - gir1.2-gtk-3.0
+    - python3-cairo
+    - python3-setuptools
+    - python3-distutils-extra
+    - fonts-font-awesome
+    - gir1.2-appindicator3-0.1
+    - slop
+    - wget
+  tags:
+     screenkey-source
+    - never
+- name: install screenkey
+  shell: |
+    cd /tmp
+    wget https://gitlab.com/screenkey/screenkey/-/archive/v1.3/screenkey-v1.3.tar.gz
+    tar -xvf screenkey-v1.3.tar.gz
+    cd screenkey-v1.3
+    sudo ./setup.py install
+    sudo mkdir -p /usr/local/share/applications
+    sudo install data/screenkey.desktop /usr/local/share/applications
+  tags:
+    - screenkey-source
+    - never
+
+- name: Clone Qogir icon theme
+  ansible.builtin.git:
+    repo: https://github.com/vinceliuice/Qogir-icon-theme
+    dest: "{{ lookup('env', 'HOME') }}/third-party/Qogir-icon-theme"
+    update: no
+  tags:
+    - core
+    - theme
+
+- name: Clone Qogir theme
+  ansible.builtin.git:
+    repo: https://github.com/vinceliuice/Qogir-theme
+    dest: "{{ lookup('env', 'HOME') }}/third-party/Qogir-theme"
+    update: no
+  tags:
+    - core
+    - theme
+
+- name: install Qogir theme
+  shell: |
+    cd {{ lookup('env', 'HOME') }}/third-party/Qogir-theme/
+    ./install.sh
+  tags:
+    - core
+    - theme
+
+- name: install Qogir icon theme
+  shell:
+    cd {{ lookup('env', 'HOME') }}/third-party/Qogir-icon-theme/
+    ./install.sh
+  tags:
+    - core
+    - theme
