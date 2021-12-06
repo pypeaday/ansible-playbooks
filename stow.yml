@@ -1,0 +1,8 @@
+- name: stow dotfile
+  shell: cd ~/dotfiles && source ./install
+  tags:
+    - install
+    - terminal
+    - core
+    - stow
+    - dotfiles
