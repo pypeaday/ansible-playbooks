@@ -21,6 +21,3 @@ pyenv_virtualenvwrapper_home: "{{ ansible_env.HOME }}/.virtualenvs"
 pyenv_detect_existing_install: true
 
 pyenv_homebrew_on_linux: false
-
-
-

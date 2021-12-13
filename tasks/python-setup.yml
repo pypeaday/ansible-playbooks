@@ -1,0 +1,12 @@
+- name: Change pyenv permissions
+  become_user: root
+  file:
+    state   : directory
+    recurse : yes
+    path: "{{ pyenv_root }}" 
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_group_id }}"
+  tags:
+    - pyenv
+    - permissions
+    - core
