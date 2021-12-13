@@ -1,4 +1,5 @@
-- hosts: localhost
+- name: "Deploy with Ansible"
+  hosts: localhost
   connection: local
   gather_facts: true
   become: true
@@ -17,14 +18,14 @@
     #   tags:
     #     - core
     #     - ruby
-    - role: suzuki-shunsuke.pyenv-module
-      tags:
-        - core
-        - pyenv
-    # - role: markosamuli.pyenv
+    # - role: suzuki-shunsuke.pyenv-module
     #   tags:
     #     - core
     #     - pyenv
+    - role: markosamuli.pyenv
+      tags:
+        - core
+        - pyenv
 
   tasks:
     - include: tasks/core.yml
