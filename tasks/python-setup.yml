@@ -4,8 +4,8 @@
     state   : directory
     recurse : yes
     path: "{{ pyenv_root }}" 
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_group_id }}"
+    owner: "{{ ansible_user}}"
+    group: "{{ ansible_group}}"
   tags:
     - pyenv
     - permissions

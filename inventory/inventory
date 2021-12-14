@@ -1,7 +1,0 @@
-[cat]
-localhost
-[cat:vars]
-ansible_group_id="users"
-
-[personal]
-localhost

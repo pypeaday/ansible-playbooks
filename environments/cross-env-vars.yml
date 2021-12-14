@@ -1,3 +1,5 @@
+ansible_user: nic
+ansible_group: nic
 pyenv_home: "{{ ansible_env.HOME }}"
 pyenv_root: "{{ ansible_env.HOME }}/.pyenv"
 pyenv_init_shell: false
@@ -5,7 +7,7 @@ pyenv_version: "v1.2.13"
 pyenv_virtualenv_version: "v1.1.5"
 pyenv_virtualenvwrapper_version: "v20140609"
 pyenv_python37_version: "3.7.6"
-pyenv_python38_version: "3.8.1"
+pyenv_python38_version: "3.8.11"
 pyenv_python39_version: "3.9.5"
 pyenv_python310_version: "3.10.0"
 pyenv_python_versions:
