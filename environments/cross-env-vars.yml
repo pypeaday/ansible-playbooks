@@ -1,21 +1,21 @@
-ansible_user: nic
-ansible_group: nic
 pyenv_home: "{{ ansible_env.HOME }}"
 pyenv_root: "{{ ansible_env.HOME }}/.pyenv"
 pyenv_init_shell: false
-pyenv_version: "v1.2.13"
+pyenv_version: "v2.2.2"
 pyenv_virtualenv_version: "v1.1.5"
 pyenv_virtualenvwrapper_version: "v20140609"
 pyenv_python37_version: "3.7.6"
-pyenv_python38_version: "3.8.11"
-pyenv_python39_version: "3.9.5"
+pyenv_python38_version: "3.8.12"
+pyenv_python39_version: "3.9.9"
 pyenv_python310_version: "3.10.0"
+pyenv_python311_version: "3.11-dev"
 pyenv_python_versions:
   - "{{ pyenv_python37_version }}"
   - "{{ pyenv_python38_version }}"
   - "{{ pyenv_python39_version }}"
   - "{{ pyenv_python310_version }}"
-pyenv_global: "{{ pyenv_python39_version }} system"
+  - "{{ pyenv_python311_version }}"
+pyenv_global: "{{ pyenv_python38_version }}"
 
 pyenv_virtualenvwrapper: false
 pyenv_virtualenvwrapper_home: "{{ ansible_env.HOME }}/.virtualenvs"
