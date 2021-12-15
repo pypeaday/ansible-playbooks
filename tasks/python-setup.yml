@@ -10,3 +10,9 @@
     - pyenv
     - permissions
     - core
+
+- name: Set default Python to 3.8
+  shell: pyenv global "{{ pyenv_python38_version }}"
+  tags:
+    - pyenv
+    - python
