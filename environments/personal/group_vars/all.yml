@@ -1,0 +1,2 @@
+ansible_user: nic
+ansible_group: nic
