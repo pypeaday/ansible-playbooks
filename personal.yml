@@ -1,13 +1,12 @@
 - name: "Deploy with Ansible"
-  hosts: all
+  hosts: personal
   connection: local
   gather_facts: true
   become: true
   become_user:  "{{ lookup('env', 'USER') }}"
-  # uncomment for work
-  environment:
-    http_proxy: http://proxy.cat.com:80
-    https_proxy: http://proxy.cat.com:80
+  vars:
+    ansible_group: nic
+    ansible_user: nic
 
   pre_tasks:
     - name: update repositories
