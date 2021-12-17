@@ -10,9 +10,20 @@
     - pyenv
     - permissions
     - core
+    - install
 
 - name: Set default Python to 3.8
   shell: pyenv global "{{ pyenv_python38_version }}"
   tags:
     - pyenv
     - python
+    - install 
+
+
+- name: Install pyflyby 
+  shell: pipx install pyflyby --force 
+  tags:
+    - install
+    - python
+    - dotfiles
+    - nvim
