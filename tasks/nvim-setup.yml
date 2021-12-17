@@ -1,7 +1,7 @@
 - name: Clone Neovim
   ansible.builtin.git:
     repo: 'https://github.com/neovim/neovim.git'
-    dest: "{{ lookup('env', 'HOME') }}/neovim"
+    dest: "{{ lookup('env', 'HOME') }}/third-party/neovim"
     update: no
   tags:
     - install
@@ -9,19 +9,56 @@
     - neovim
     - nvim
 - name: Build neovim
-  shell: "cd {{ lookup('env', 'HOME') }}/neovim && make"
+  shell: "cd {{ lookup('env', 'HOME') }}/third-party/neovim && make"
   tags:
     - install
     - terminal
     - neovim
     - nvim
+- name: Check if pynvim venv3 exists
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/.config/nvim/.venv3/"
+  register: pynvim_venv3_exists
+
+- name: Install pynvim venv3
+  when: pynvim_venv3_exists is failed
+  shell: |
+    cd {{ lookup('env', 'HOME') }}/.config/nvim/
+    python -m venv .venv3  --prompt nvim3
+- name: Install pynvim into venv3
+  pip:
+    name: pynvim
+    virtualenv: "{{ lookup('env', 'HOME') }}/.config/nvim/.venv3"
+- name: Install black into venv3
+  pip:
+    name: black
+    version: 20.b81
+    virtualenv: "{{ lookup('env', 'HOME') }}/.config/nvim/.venv3"
+
+- name: Check if pynvim venv2 exists
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/.config/nvim/"
+  register: pynvim_venv2_exists
+
+- name: Install neovim venv2
+  when: pynvim_venv2_exists is failed
+  shell: |
+    cd {{ lookup('env', 'HOME') }}/.config/nvim/
+    python2 -m virtualenv .venv2  --prompt nvim2
+
+- name: Install pynvim into venv2
+  pip:
+    name: pynvim
+    virtualenv: "{{ lookup('env', 'HOME') }}/.config/nvim/.venv2"
+
 - name: Install neovim
-  shell: "cd {{ lookup('env', 'HOME') }}/neovim && sudo make install"
+  shell: "cd {{ lookup('env', 'HOME') }}/third-party/neovim && sudo make install"
   tags:
     - install
     - terminal
     - neovim
     - nvim
+
 - name: Neovim Plugin Development 1
   become_user: root
   apt: name=luarocks
@@ -30,6 +67,7 @@
     - terminal
     - neovim
     - nvim
+
 - name: Neovim Plugin Development 2 luacheck
   shell: luarocks install luacheck
   become_user: root
@@ -38,6 +76,7 @@
     - terminal
     - neovim
     - nvim
+
 - name: Install Vim-Plug
   shell: curl -fLo {{ lookup('env', 'HOME') }}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   tags:
@@ -47,6 +86,7 @@
     - plugged
     - neovim
     - nvim
+
 - name: Install vim Plugins
   ignore_errors: yes
   shell: nvim -u ~/.config/nvim/plugins.vim +PlugInstall +qall
@@ -56,6 +96,7 @@
     - dotfiles
     - neovim
     - nvim
+
 - name: Setup python-lsp-server
   shell: pipx install 'python-lsp-server[all]' --force
   tags:
@@ -65,6 +106,7 @@
     - neovim
     - nvim
     - python-lsp
+
 - name: Setup pylsp-mypy
   shell: pipx inject python-lsp-server pylsp-mypy --force
   tags:
@@ -74,8 +116,19 @@
     - neovim
     - nvim
     - python-lsp
+      
 - name: Setup jedi-language-server
   shell: pipx install jedi-language-server --force
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - neovim
+    - nvim
+    - python-lsp
+
+- name: Setup black 
+  shell: pipx install git+https://github.com/psf/black.git@235412635e91950c8ef2d9ebe777f97fffd4f01d  --force # version 20.8b1
   tags:
     - install
     - terminal
