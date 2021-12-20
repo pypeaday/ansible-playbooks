@@ -1,63 +1,69 @@
+- name: Install System Packages required for nvim
+  become_user: root
+  apt:
+    name: 
+      - libtool
+      - libtool-bin
+      - autoconf
+      - automake
+      - cmake
+      - libncurses5-dev
+      - g++
+      - python-dev
+      - python3-dev
+      - python3-pip
+      - ruby
+      - ruby-dev
+
 - name: Clone Neovim
   ansible.builtin.git:
     repo: 'https://github.com/neovim/neovim.git'
     dest: "{{ lookup('env', 'HOME') }}/third-party/neovim"
-    update: no
-  tags:
-    - install
-    - terminal
-    - neovim
-    - nvim
+    update: yes
+
 - name: Build neovim
-  shell: "cd {{ lookup('env', 'HOME') }}/third-party/neovim && make"
-  tags:
-    - install
-    - terminal
-    - neovim
-    - nvim
+  become_user: root
+  shell: "cd {{ lookup('env', 'HOME') }}/third-party/neovim && sudo make CMAKE_INSTALL_PREFIX={{ lookup('env', 'home') }}/third-party/neovim CMAKE_BUILD_TYPE=RelWithDebInfo"
+
+- name: Install neovim
+  shell: "cd {{ lookup('env', 'HOME') }}/third-party/neovim && sudo make install"
+
 - name: Check if pynvim venv3 exists
   stat:
-    path: "{{ lookup('env', 'HOME') }}/.config/nvim/.venv3/"
+    path: "{{ lookup('env', 'HOME') }}/.config/nvim/"
   register: pynvim_venv3_exists
 
 - name: Install pynvim venv3
-  when: pynvim_venv3_exists is failed
+  when: pynvim_venv3_path.stat.islnk is not defined
   shell: |
     cd {{ lookup('env', 'HOME') }}/.config/nvim/
-    python -m venv .venv3  --prompt nvim3
+    python3 -m venv .venv3  --prompt nvim3
 - name: Install pynvim into venv3
   pip:
     name: pynvim
     virtualenv: "{{ lookup('env', 'HOME') }}/.config/nvim/.venv3"
+
+- name: Check if pynvim venv2 exists
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/.config/nvim/"
+  register: pynvim_venv2_path
+
+- name: Install neovim venv2
+  when: pynvim_venv2_path.stat.islnk is not defined
+  shell: |
+    cd {{ lookup('env', 'HOME') }}/.config/nvim/
+    python2 -m virtualenv .venv2  --prompt nvim2
+
 - name: Install black into venv3
   pip:
     name: black
     version: 20.b81
     virtualenv: "{{ lookup('env', 'HOME') }}/.config/nvim/.venv3"
 
-- name: Check if pynvim venv2 exists
-  stat:
-    path: "{{ lookup('env', 'HOME') }}/.config/nvim/"
-  register: pynvim_venv2_exists
-
-- name: Install neovim venv2
-  when: pynvim_venv2_exists is failed
-  shell: |
-    cd {{ lookup('env', 'HOME') }}/.config/nvim/
-    python2 -m virtualenv .venv2  --prompt nvim2
-
 - name: Install pynvim into venv2
   pip:
     name: pynvim
     virtualenv: "{{ lookup('env', 'HOME') }}/.config/nvim/.venv2"
-
-- name: Install neovim
-  shell: "cd {{ lookup('env', 'HOME') }}/third-party/neovim && sudo make install"
-  tags:
-    - install
-    - terminal
-    - neovim
-    - nvim
 
 - name: Neovim Plugin Development 1
   become_user: root
@@ -97,26 +103,50 @@
     - neovim
     - nvim
 
-- name: Setup python-lsp-server
-  shell: pipx install 'python-lsp-server[all]' --force
+- name: install python lsp
+  when: pylsp_path.stat.islnk is not defined
   tags:
-    - install
-    - terminal
-    - dotfiles
-    - neovim
-    - nvim
+    -lsp
     - python-lsp
+  block:
+  - name: Setup python-lsp-server
+    shell: pipx install 'python-lsp-server[all]' --force
 
-- name: Setup pylsp-mypy
-  shell: pipx inject python-lsp-server pylsp-mypy --force
+  - name: Setup pylsp-mypy
+    shell: pipx inject python-lsp-server pylsp-mypy --force
+
+  - name: Setup jedi-language-server
+    shell: pipx install jedi-language-server --force
+
+- name: check is yaml-language-server installed
+  shell: command -v yaml-language-server
+  register: yamllsp_exists
+  ignore_errors: yes
   tags:
-    - install
-    - terminal
-    - dotfiles
-    - neovim
-    - nvim
-    - python-lsp
-      
+    - lsp
+    - yaml-lsp
+
+- name: Setup yaml language server
+  when: yamllsp_path.stat.islnk is not defined
+  shell: npm i -g yaml-language-server@latest
+  tags:
+    - lsp
+    - yaml-lsp      
+- name: check is bashlsp installed
+  shell: command -v bash-language-server
+  register: bashlsp_exists
+  ignore_errors: yes
+  tags:
+    - lsp
+    - bash-lsp
+
+- name: Setup bash language server
+  when: bashlsp_path.stat.islnk is not defined
+  shell: npm i -g bash-language-server@latest
+  tags:
+    - lsp
+    - bash-lsp
+
 - name: Setup jedi-language-server
   shell: pipx install jedi-language-server --force
   tags:

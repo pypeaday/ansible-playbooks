@@ -3,7 +3,7 @@
   apt:
     name: 
       - build-essential
-      # - ccache
+      - ccache
       - cmake
       - curl
       - dconf-editor
@@ -29,21 +29,20 @@
       - tree
       - unzip
       - webp
-  tags:
-    - install
-    - terminal
-    - neovim
-    - nvim
-    - core
+  # tags:
+  #   - install
+  #   - terminal
+  #   - neovim
+  #   - nvim
+  #   - core
+    
+# - name: check is fd installed
+#   shell: command -v fd
+#   register: fd_exists
+#   ignore_errors: yes
 
-- name: pipx
-  pip:
-    name: pipx
-  tags:
-    - install
-    - terminal
-    - core
-    - pipx
+# - name: install fd
+#   shell: . ~/.profile && nix-env -iA nixpkgs.fd
 
 - name: Add another bin dir to system-wide $PATH.
   become_user: root
@@ -51,30 +50,41 @@
     dest: /etc/profile.d/custom-path.sh
     content: 'export "PATH=$PATH:~/.local/bin"'
 
-- name: pipx ensurepath
-  shell: pipx ensurepath
+- name: check is pipx installed
+  shell: command -v pipx
+  register: pipx_exists
+  ignore_errors: yes
+
+- name: pipx
+  when: pipx_exists is failed
+  pip:
+    name: pipx
   tags:
-    - install
-    - terminal
-    - core
     - pipx
 
-- name: Check if Homebrew is already installed
-  stat:
-    path: /usr/local/bin/brew
-  register: b
-  tags:
-    - install
-    - brew
-    - homebrew
+  # pip:
+# - name: pipx ensurepath
+  # shell: pipx ensurepath
+  # tags:
+  #   - pipx
 
-- name: Install Homebrew
-  shell: |
-    echo "Doing the thing!"
-    export CI=1
-    /bin/bash -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  when: not b.stat.exists
-  tags:
-    - install
-    - brew
-    - homebrew
+# - name: Check if Homebrew is already installed
+#   stat:
+#     path: /usr/local/bin/brew
+#   register: b
+#   tags:
+#     - install
+#     - brew
+#     - homebrew
+
+# - name: Install Homebrew
+#   shell: |
+#     echo "Doing the thing!"
+#     export CI=1
+#     export NONINTERACTIVE=1
+#     /bin/bash -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+#   when: not b.stat.exists
+#   tags:
+#     - install
+#     - brew
+#     - homebrew

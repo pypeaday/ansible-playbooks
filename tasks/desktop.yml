@@ -6,6 +6,7 @@
       - picom
       - flameshot
       - gimp
+      - i3
       - lxappearance
       - pavucontrol
       - rofi
@@ -20,60 +21,64 @@
     - install
     - desktop
     - desktop-apt
-- name: install polybar dependencies
-  become_user: root
-  apt: 
-    name:
-      - cmake
-      - cmake-data
-      - libcairo2-dev
-      - libjsoncpp-dev
-      - 'libxcb-*'
-      - libxcb-composite0-dev
-      - libxcb-ewmh-dev
-      - libxcb-randr0-dev
-      - libxcb1-dev
-      - python3-sphinx
-      - python3-xcbgen
-      - xcb-proto
+- name: check is polybar installed
+  shell: command -v polybar
+  register: polybar_exists
+  ignore_errors: yes
   tags: 
     - desktop
     - polybar
-- name: clone polybar
-  ansible.builtin.git:
-    repo: 'https://github.com/jaagr/polybar.git'
-    dest: "{{ lookup('env', 'HOME') }}/git/polybar"
-    update: no
-  tags:
-    - desktop
-    - obs
-    - polybar
+
 - name: install polybar
-  shell: |
-    sudo ln -s /usr/include/jsoncpp/json/ /usr/include/json
-    cd {{ lookup('env', 'HOME') }}/git/polybar
-    ./build.sh
-  tags:
+  tags: 
     - desktop
     - polybar
+  when: polybar_exists is failed
+  block:
+  - name: install polybar dependencies
+    become_user: root
+    apt: 
+      name:
+        - cmake
+        - cmake-data
+        - libcairo2-dev
+        - libjsoncpp-dev
+        - 'libxcb-*'
+        - libxcb-composite0-dev
+        - libxcb-ewmh-dev
+        - libxcb-randr0-dev
+        - libxcb1-dev
+        - python3-sphinx
+        - python3-xcbgen
+        - xcb-proto
+  - name: clone polybar
+    ansible.builtin.git:
+      repo: 'https://github.com/jaagr/polybar.git'
+      dest: "{{ lookup('env', 'HOME') }}/third-party/polybar"
+      update: no
+  - name: install polybar
+    shell: |
+      sudo ln -s /usr/include/jsoncpp/json/ /usr/include/json
+      cd {{ lookup('env', 'HOME') }}/third-party/polybar
+      ./build.sh
 
 - name: clone v4l2loopback
   ansible.builtin.git:
     repo: 'https://github.com/umlaeute/v4l2loopback.git'
-    dest: "{{ lookup('env', 'HOME') }}/git/v4l2loopback"
+    dest: "{{ lookup('env', 'HOME') }}/third-party/v4l2loopback"
     update: no
   tags:
     - desktop
     - obs
     - v4l2loopback
 - name: Build 4v4l2loopback
-  shell: "cd {{ lookup('env', 'HOME') }}/git/v4l2loopback && make"
+  shell: "cd {{ lookup('env', 'HOME') }}/third-party/v4l2loopback && make"
   tags:
     - desktop
     - obs
     - v4l2loopback
 - name: install v4l2loopback
-  shell: "cd {{ lookup('env', 'HOME') }}/git/v4l2loopback sudo make install"
+  shell: "cd {{ lookup('env', 'HOME') }}/third-party/v4l2loopback sudo make install"
   tags:
     - desktop
     - obs
