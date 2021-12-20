@@ -23,6 +23,10 @@
       tags:
         - core
         - pyenv
+    - role: monolithprojects.homebrew
+      become_user: root
+      tags:
+        - try_brew
   tasks:
     - include: tasks/core.yml
     - include: tasks/repos.yml

@@ -4,3 +4,5 @@ roles:
     # version: v5.0.0
   - name: geerlingguy.ruby
   - name: suzuki-shunsuke.pyenv-module
+  - name: markosamuli.ansible-linuxbrew
+  - name: monolithprojects.homebrew
