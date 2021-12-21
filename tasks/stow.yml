@@ -1,3 +1,12 @@
+- name: ensure dotfiles directory
+  file:
+    path: "{{ lookup('env', 'HOME') }}/dotfiles"
+    state: directory
+- name: Clone dotfiles
+  ansible.builtin.git:
+    repo: 'git@github.com:nicpayne713/dotfiles.git'
+    dest: "{{ lookup('env', 'HOME') }}/dotfiles"
+    update: no
 - name: stow dotfile
   shell: cd ~/dotfiles && source ./install
   tags:
