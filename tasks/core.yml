@@ -30,12 +30,12 @@
       - tree
       - unzip
       - webp
-  # tags:
-  #   - install
-  #   - terminal
-  #   - neovim
-  #   - nvim
-  #   - core
+  tags:
+    - install
+    - terminal
+    - neovim
+    - nvim
+    - core
     
 # - name: check is fd installed
 #   shell: command -v fd
