@@ -15,6 +15,7 @@
     repo: 'https://github.com/nicpayne713/dotfiles.git'
     dest: "{{ lookup('env', 'HOME') }}/dotfiles"
     update: no
+    recursive: no  # personal needs ssh... not sure what to do about this yet
   tags:
     - install
     - terminal
