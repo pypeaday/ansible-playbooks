@@ -12,7 +12,7 @@
 - name: Clone dotfiles
   ansible.builtin.git:
     # repo: 'git@github.com:nicpayne713/dotfiles.git'
-    repo: 'https://www.github.com:nicpayne713/dotfiles.git'
+    repo: 'https://github.com/nicpayne713/dotfiles.git'
     dest: "{{ lookup('env', 'HOME') }}/dotfiles"
     update: no
   tags:
