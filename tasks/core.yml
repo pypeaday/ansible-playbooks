@@ -5,6 +5,7 @@
       - build-essential
       - ccache
       - cmake
+      - cifs-utils
       - curl
       - dconf-editor
       - direnv
