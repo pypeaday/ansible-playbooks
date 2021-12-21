@@ -23,7 +23,7 @@
     - stow
     - dotfiles
 - name: stow dotfile
-  shell: cd ~/dotfiles && source ./install
+  shell: cd ~/dotfiles && ./install
   tags:
     - install
     - terminal
