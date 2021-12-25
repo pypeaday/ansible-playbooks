@@ -9,6 +9,7 @@
       - curl
       - dconf-editor
       - direnv
+      - ffmpeg
       - gettext
       - golang
       - htop
