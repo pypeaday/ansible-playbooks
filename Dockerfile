@@ -1,5 +1,5 @@
 # For working at work
-FROM ubuntu:latest
+FROM ubuntu:20.04
 ENV http_proxy=http://proxy.cat.com:80
 ENV https_proxy=http://proxy.cat.com:80
 
