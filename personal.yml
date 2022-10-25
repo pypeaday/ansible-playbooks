@@ -112,3 +112,9 @@
         - dev
         - brewski
 
+    - import_tasks: tasks/kitty.yml
+      tags:
+        - install
+        - dev
+        - kitty
+
