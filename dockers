@@ -1,0 +1,4 @@
+sudo rsync -a $HOME/personal/ansible-playbooks/ /tmp/ansible-playground
+#docker run -v /tmp/ansible-playground:/home/nic -it --rm --name ansible-playground ansible-playground
+docker run -v /tmp/ansible-playground:/home/nic -it --rm --entrypoint=/bin/bash --name ansible-playground ansible-playground
+

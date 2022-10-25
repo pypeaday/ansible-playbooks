@@ -1,0 +1,16 @@
+- name: "Setup ZFS with Ansible"
+  hosts: localhost
+  gather_facts: true
+  pre_tasks:
+    - name: Update Apt
+      become: true
+      apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+
+  tasks:
+    # core works!
+    - import_tasks: tasks/zfs-setup.yml
+      tags: 
+        - zfs 

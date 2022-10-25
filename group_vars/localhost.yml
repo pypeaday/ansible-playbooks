@@ -1,0 +1,17 @@
+pyenv_env: "user"
+pyenv_path: "{{ lookup('env', 'HOME') }}/.pyenv"
+pyenv_owner: "{{ ansible_user }}"
+pyenv_python37_version: "3.7.4"
+pyenv_python38_version: "3.8.11"
+pyenv_python39_version: "3.9.8"
+pyenv_python310_version: "3.10.0"
+# pyenv_python311_version: "3.11-dev"
+pyenv_python_versions:
+  - "{{ pyenv_python37_version }}"
+  - "{{ pyenv_python38_version }}"
+  - "{{ pyenv_python39_version }}"
+  - "{{ pyenv_python310_version }}"
+  # - "{{ pyenv_python311_version }}"
+pyenv_global: "{{ pyenv_python10_version }}"
+pyenv_setting_path: "{% if pyenv_env == 'user' %}~/.bashrc{% else %}/etc/profile.d/pyenv.sh{% endif %}"
+

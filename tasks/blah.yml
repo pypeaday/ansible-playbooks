@@ -1,0 +1,44 @@
+
+- name: check is mdp installed
+  shell: command -v mdp
+  register: mdp_exists
+  ignore_errors: yes
+  tags: *tags_for_zsh_tasks
+
+- name: Install mdp
+  when: mdp_exists is failed
+  shell: |
+    cd {{ lookup('env', 'HOME') }}/third-party/
+    git clone https://github.com/visit1985/mdp.git
+    cd mdp
+    make
+    make install PREFIX="{{ lookup('env', 'HOME') }}/.local"
+  tags: *tags_for_zsh_tasks
+
+- name: check is vifm installed
+  shell: command -v vifm
+  register: vifm_exists
+  ignore_errors: yes
+  tags: *tags_for_zsh_tasks
+
+- name: Install vifm
+  when: vifm_exists is failed
+  shell: | 
+    VIFM_VERSION=$(curl --silent https://github.com/vifm/vifm/releases/latest | tr -d '"' | sed 's/^.*tag\///g' | sed 's/>.*$//g' | sed 's/^v//')
+    wget https://github.com/vifm/vifm/releases/download/v${VIFM_VERSION}/vifm-v${VIFM_VERSION}-x86_64.AppImage -O {{ lookup('env', 'HOME') }}/.local/bin/vifm
+    chmod +x {{ lookup('env', 'HOME') }}/.local/bin/vifm
+  tags: *tags_for_zsh_tasks
+
+- name: check is lf installed
+  shell: command -v lf
+  register: lf_exists
+  ignore_errors: yes
+  tags: *tags_for_zsh_tasks
+
+- name: Install lf
+  when: lf_exists is failed
+  shell: | 
+    LF_VERSION=$(curl --silent https://github.com/gokcehan/lf/releases/latest | tr -d '"' | sed 's/^.*tag\///g' | sed 's/>.*$//g' | sed 's/^v//')
+    wget https://github.com/gokcehan/lf/releases/download/${LF_VERSION}/lf-linux-amd64.tar.gz -O- -q | tar -zxf - -C {{ lookup('env', 'HOME') }}/.local/bin/
+  tags: *tags_for_zsh_tasks
+

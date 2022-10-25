@@ -1,0 +1,8 @@
+---
+roles:
+  - name: staticdev.pyenv
+  #- name: markosamuli.pyenv
+    # version: v5.0.0
+  - name: geerlingguy.ruby
+  # - name: markosamuli.ansible-linuxbrew
+  - name: monolithprojects.homebrew

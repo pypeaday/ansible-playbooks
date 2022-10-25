@@ -1,0 +1,130 @@
+- name: Remove neovim
+  shell: rm -rf "{{ lookup('env', 'HOME')  }}/third-party/neovim"
+  become: true
+  tags:
+    - install
+    - neovim
+      
+- name: Clone Neovim
+  ansible.builtin.git:
+    repo: 'https://github.com/neovim/neovim.git'
+    dest: "{{ lookup('env', 'HOME') }}/third-party/neovim"
+    version: nightly
+  ignore_errors: yes
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - plugged
+    - neovim
+    - nvim
+
+- name: Build neovim
+  shell: "cd {{ lookup('env', 'HOME') }}/third-party/neovim && make -j 20"
+  tags:
+    - install
+    - neovim
+- name: Install neovim
+  become: true
+  shell: "cd {{ lookup('env', 'HOME') }}/third-party/neovim && make install"
+  tags:
+    - install
+    - neovim
+
+- name: Check if python3 nvim env exists
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim/"
+  register: pynvim_venv3_exists
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - plugged
+    - neovim
+    - nvim
+
+- name: Create python3 nvim environment 
+  when: pynvim_venv3_path.stat.islnk is not defined
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - plugged
+    - neovim
+    - nvim
+  shell: |
+    cd {{ lookup('env', 'HOME') }}/dotfiles
+    python3 -m venv .venv/nvim
+
+- name: Install pynvim into venv3
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - plugged
+    - neovim
+    - nvim
+  shell: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim/bin/pip install pynvim"
+
+- name: Check if pynvim venv2 exists
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - plugged
+    - neovim
+    - nvim
+  stat:
+    path: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim2/"
+  register: pynvim_venv2_exists
+
+- name: Install neovim venv2
+  when: pynvim_venv2_path.stat.islnk is not defined
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - plugged
+    - neovim
+    - nvim
+  shell: |
+    cd {{ lookup('env', 'HOME') }}/dotfiles
+    virtualenv -p /home/nic/.pyenv/versions/2.7.18/bin/python2.7 .venv/nvim2
+
+- name: Install pynvim into venv2
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - plugged
+    - neovim
+    - nvim
+  shell: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim2/bin/pip install pynvim" 
+
+- name: Install Vim-Plug
+  shell: curl -fLo {{ lookup('env', 'HOME') }}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - plugged
+    - neovim
+    - nvim
+
+- name: Install vim Plugins
+  ignore_errors: yes
+  shell: nvim -u ~/.config/nvim/plugins.vim +PlugInstall +qall
+  tags:
+    - install
+    - terminal
+    - dotfiles
+    - neovim
+    - nvim
+
+- name: Install pyflyby 
+  shell: pipx install pyflyby --force 
+  tags:
+    - install
+    - python
+    - dotfiles
+    - nvim

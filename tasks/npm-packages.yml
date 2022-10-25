@@ -1,0 +1,24 @@
+- name: Install Yarn
+  npm:
+    name: yarn
+    global: yes
+  tags:
+    - install
+    - node
+
+- name: Install YAML LSP
+  npm:
+    name: yaml-language-server
+    global: yes
+  tags:
+    - install
+    - node
+      
+- name: Install bash LSP
+  npm:
+    name: bash-language-server
+    global: yes
+  tags:
+    - install
+    - node
+
