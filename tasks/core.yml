@@ -39,6 +39,7 @@
       - tar
       - tree
       - unzip
+      - vifm
       - webp
       - wget
   tags:
