@@ -27,6 +27,7 @@
       - neofetch
       - ninja-build
       - nvtop
+      - openssh-server
       - pkg-config
       - virtualenv
       - python3-dev

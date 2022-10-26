@@ -75,6 +75,11 @@
       tags: 
         - install 
         - core
+    - import_tasks: tasks/ssh-setup.yml
+      tags: 
+        - install 
+        - core
+        - ssh
     - import_tasks: tasks/python-setup.yml
       tags: 
         - install 
