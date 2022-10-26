@@ -2,6 +2,7 @@
   hosts: localhost
   gather_facts: true
   vars:
+    # general
     ansible_group: nic
     ansible_user: nic
     # docker
