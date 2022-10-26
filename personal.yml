@@ -4,6 +4,12 @@
   vars:
     ansible_group: nic
     ansible_user: nic
+    # docker
+    docker_compose_version: "1.29.1"
+    docker_apt_gpg_key: "https://download.docker.com/linux/ubuntu/gpg"
+    docker_apt_repository: "deb https://download.docker.com/linux/ubuntu jammy stable"
+    docker_users:
+      - "{{ ansible_user }}"
     pyenv_python27_version: "2.7.18"
     pyenv_python37_version: "3.7.13"
     pyenv_python38_version: "3.8.13"
@@ -34,6 +40,14 @@
         - core
 
   roles:
+    - role: geerlingguy.docker
+      become: true
+      tags:
+        - install
+        - core
+        - docker
+        - skip_ansible_lint
+
     - role: geerlingguy.ruby
       tags:
         - install
@@ -117,4 +131,3 @@
         - install
         - dev
         - kitty
-
