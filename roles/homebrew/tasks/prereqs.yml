@@ -1,0 +1,44 @@
+---
+- block:
+  - name: Install the 'Development tools' package group
+    ansible.builtin.yum:
+      name: "@Development tools"
+      state: present
+  
+  - name: Install prereq rpm packages
+    ansible.builtin.yum:
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+        - curl
+        - file
+        - git
+        - procps-ng
+
+  - name: Install Fedora 30+ rpm package
+    ansible.builtin.yum:
+      name: libxcrypt-compat
+      state: present
+    when:
+      - ansible_distribution == "Fedora"
+      - ansible_distribution_major_version >= "30"
+  when:
+    - (ansible_pkg_mgr == "yum" or ansible_pkg_mgr == "dnf") and (ansible_os_family == "RedHat" or ansible_os_family == "Rocky")
+
+- block:  
+  - name: Install prereq deb packages
+    become: true
+    ansible.builtin.apt:
+      update_cache: true
+      name: "{{ packages }}"
+      state: present
+    vars:
+      packages:
+        - build-essential
+        - curl
+        - file
+        - git
+        - procps
+  when:
+    - ansible_pkg_mgr == "apt" and ansible_os_family == "Debian"

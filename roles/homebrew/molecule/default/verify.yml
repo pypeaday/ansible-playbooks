@@ -1,0 +1,12 @@
+---
+- name: validate Homebrew
+  user: ansible
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Install Formula
+      community.general.homebrew:
+        name: run
+        state: present
+        path: "/home/{{ ansible_user }}/.linuxbrew/bin"

@@ -1,0 +1,46 @@
+---
+- name: Get the user shell
+  shell: |
+    set -o pipefail
+    egrep "^{{ homebrew_user }}:" /etc/passwd | awk -F: '{ print $7 }' | awk -F/ '{print $3}'
+  args:
+    executable: /bin/bash
+  changed_when: false
+  register: user_shell
+
+- name: Add homebrew path to system-wide $PATH for bash shell (Debian OS Family).
+  ansible.builtin.lineinfile:
+    path: "/home/{{ homebrew_user }}/.profile"
+    line: "PATH=$PATH:~/.linuxbrew/bin"
+    owner: "{{ homebrew_user }}"
+    mode: 0644
+    create: yes
+  when: 
+    - user_shell.stdout == "bash" and ansible_os_family == "Debian"
+
+- name: Add homebrew path to system-wide $PATH for bash shell (RedHat OS Family).
+  ansible.builtin.lineinfile:
+    path: "/home/{{ homebrew_user }}/.bash_profile"
+    line: "PATH=$PATH:~/.linuxbrew/bin"
+    owner: "{{ homebrew_user }}"
+    mode: 0644
+    create: yes
+  when: 
+    - user_shell.stdout == "bash" and ansible_os_family == "RedHat"
+
+- name: Add homebrew path to system-wide $PATH for fish shell.
+  ansible.builtin.copy:
+    dest: "/home/{{ homebrew_user }}/.config/fish/conf.d/brew.fish"
+    content: "set -gx PATH $PATH /home/{{ homebrew_user }}/.linuxbrew/bin"
+    owner: "{{ homebrew_user }}"
+    mode: 0644
+  when: user_shell.stdout == "fish"
+
+- name: Add homebrew path to system-wide $PATH for zsh shell.
+  ansible.builtin.lineinfile:
+    path: "/home/{{ homebrew_user }}/.zprofile"
+    line: "PATH=$PATH:~/.linuxbrew/bin"
+    owner: "{{ homebrew_user }}"
+    mode: 0644
+    create: yes
+  when: user_shell.stdout == "zsh"

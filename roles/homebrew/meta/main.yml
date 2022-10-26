@@ -1,0 +1,40 @@
+---
+  galaxy_info:
+    author: Michal Muransky
+    role_name: homebrew
+    namespace: monolithprojects
+    description: Install Homebrew for Linux
+    company: MonolithProjects
+    license: "license (MIT)"
+    min_ansible_version: 2.10
+    platforms:
+      - name: EL
+        versions:
+          - 8
+      - name: Fedora
+        versions:
+          - 28
+          - 29
+          - 30
+          - 31
+          - 32
+          - 33
+          - 34
+          - 35
+          - 36
+      - name: Debian
+        versions:
+          - buster
+          - stretch
+          - bullseye
+      - name: Ubuntu
+        versions:
+          - xenial
+          - bionic
+          - focal
+    galaxy_tags:
+      - system
+      - linux
+      - homebrew
+      - brew
+      - linuxhomebrew

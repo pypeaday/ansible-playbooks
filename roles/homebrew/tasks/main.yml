@@ -1,0 +1,18 @@
+---
+- include_tasks: prereqs.yml
+  tags:
+    - install
+
+- include_tasks: install.yml
+  tags:
+    - install
+
+- include_tasks: path.yml
+  tags:
+    - install
+    - path
+
+- include_tasks: formulae.yml
+  tags:
+    - formula
+    - formulae

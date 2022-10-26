@@ -61,7 +61,8 @@
         - install
         - python
     # homebrew works!
-    - role: monolithprojects.homebrew
+    # - role: monolithprojects.homebrew
+    - role: homebrew
       tags: 
         - core
         - install
@@ -138,3 +139,4 @@
         - install
         - dev
         - kitty
+
