@@ -11,6 +11,7 @@
     docker_apt_repository: "deb https://download.docker.com/linux/ubuntu jammy stable"
     docker_users:
       - "{{ ansible_user }}"
+    # python/pyenv
     pyenv_python27_version: "2.7.18"
     pyenv_python37_version: "3.7.13"
     pyenv_python38_version: "3.8.13"
