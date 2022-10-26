@@ -1,4 +1,4 @@
-FROM ubuntu:focal AS base
+FROM ubuntu:20.04 AS base
 WORKDIR /usr/local/bin
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
