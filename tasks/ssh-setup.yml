@@ -1,0 +1,6 @@
+- name: Enable ssh
+  become: true
+  ansible.builtin.systemd:
+    state: started
+    enabled: yes
+    name: ssh
