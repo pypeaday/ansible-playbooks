@@ -15,6 +15,7 @@
       - gettext
       - golang
       - htop
+      - jq
       - libevent-dev
       - libncurses5-dev
       - libncursesw5-dev
