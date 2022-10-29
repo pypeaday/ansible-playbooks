@@ -43,6 +43,7 @@
       - vifm
       - webp
       - wget
+      - xclip
   tags:
     - install
     - terminal
