@@ -10,6 +10,7 @@ A few notes:
 3. `ansible-galaxy collection install community.general` + `ansible-galaxy install -r requirements.yml` are required
 4. Not everything I need is in here 
     - tailscale
+    - refind (bootloader - `sudo apt install refind`)
 
 ## Setup
 
