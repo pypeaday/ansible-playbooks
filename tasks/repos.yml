@@ -31,3 +31,11 @@
     dest: "{{ lookup('env', 'HOME') }}/third-party/nord-rofi-theme"
     update: no
 
+- name: Clone fancy-motd 
+  ansible.builtin.git:
+    repo: 'https://github.com/bcyran/fancy-motd.git'
+    dest: "{{ lookup('env', 'HOME') }}/third-party/fancy-motd"
+    update: no
+  tags:
+    - motd
+
