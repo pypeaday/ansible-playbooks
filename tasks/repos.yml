@@ -33,8 +33,8 @@
 
 - name: Clone fancy-motd 
   ansible.builtin.git:
-    repo: 'https://github.com/bcyran/fancy-motd.git'
-    dest: "{{ lookup('env', 'HOME') }}/third-party/fancy-motd"
+    repo: 'https://github.com/pypeaday/fancy-motd.git'
+    dest: "{{ lookup('env', 'HOME') }}/personal/fancy-motd"
     update: no
   tags:
     - motd
