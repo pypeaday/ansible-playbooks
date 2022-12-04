@@ -28,3 +28,7 @@
 - name: Install flake8
   community.general.pipx:
     name: flake8
+
+- name: Install doq
+  community.general.pipx:
+    name: doq
