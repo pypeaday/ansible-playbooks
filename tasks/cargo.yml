@@ -21,6 +21,12 @@
   tags:
     - rust
 
+- name: add cargo to path
+  shell: PATH=~/.local/.cargo/bin:$PATH
+  tags:
+  - install
+  - rust
+
 - name: Install rg 
   community.general.cargo:
     name: ripgrep
