@@ -51,6 +51,7 @@
         - skip_ansible_lint
 
     - role: geerlingguy.ruby
+      become: true
       tags:
         - install
         - core
