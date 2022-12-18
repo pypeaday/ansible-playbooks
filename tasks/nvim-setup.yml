@@ -89,7 +89,7 @@
     - nvim
   shell: |
     cd {{ lookup('env', 'HOME') }}/dotfiles
-    virtualenv -p /home/nic/.pyenv/versions/2.7.18/bin/python2.7 .venv/nvim2
+    virtualenv -p {{ lookup('env', 'HOME') }}/.pyenv/versions/2.7.18/bin/python2.7 .venv/nvim2
 
 - name: Install pynvim into venv2
   tags:
