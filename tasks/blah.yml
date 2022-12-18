@@ -2,7 +2,7 @@
 - name: check is mdp installed
   shell: command -v mdp
   register: mdp_exists
-  ignore_errors: yes
+  ignore_errors: True
   tags: *tags_for_zsh_tasks
 
 - name: Install mdp
@@ -18,7 +18,7 @@
 - name: check is vifm installed
   shell: command -v vifm
   register: vifm_exists
-  ignore_errors: yes
+  ignore_errors: True
   tags: *tags_for_zsh_tasks
 
 - name: Install vifm
@@ -32,7 +32,7 @@
 - name: check is lf installed
   shell: command -v lf
   register: lf_exists
-  ignore_errors: yes
+  ignore_errors: True
   tags: *tags_for_zsh_tasks
 
 - name: Install lf
