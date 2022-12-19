@@ -139,14 +139,8 @@
     - v4l2loopback
 
 - name: rofimoji deps
-  apt: name={{item}}
+  apt: name=['fonts-emojione' , 'python3' , 'rofi' , 'xdotool' , 'xsel'] 
   become_user: root
-  with_items:
-    - fonts-emojione
-    - python3
-    - rofi
-    - xdotool
-    - xsel
   tags:
     - install
     - dotfiles
