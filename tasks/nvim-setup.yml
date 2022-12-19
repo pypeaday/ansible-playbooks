@@ -66,41 +66,6 @@
     - nvim
   shell: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim/bin/pip install pynvim"
 
-- name: Check if pynvim venv2 exists
-  tags:
-    - install
-    - terminal
-    - dotfiles
-    - plugged
-    - neovim
-    - nvim
-  stat:
-    path: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim2/"
-  register: pynvim_venv2_exists
-
-- name: Install neovim venv2
-  when: pynvim_venv2_path.stat.islnk is not defined
-  tags:
-    - install
-    - terminal
-    - dotfiles
-    - plugged
-    - neovim
-    - nvim
-  shell: |
-    cd {{ lookup('env', 'HOME') }}/dotfiles
-    virtualenv -p {{ lookup('env', 'HOME') }}/.pyenv/versions/2.7.18/bin/python2.7 .venv/nvim2
-
-- name: Install pynvim into venv2
-  tags:
-    - install
-    - terminal
-    - dotfiles
-    - plugged
-    - neovim
-    - nvim
-  shell: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim2/bin/pip2.7 install pynvim" 
-
 - name: Install pyflyby 
   shell: pipx install pyflyby --force 
   tags:
