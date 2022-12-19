@@ -101,26 +101,6 @@
     - nvim
   shell: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim2/bin/pip2.7 install pynvim" 
 
-- name: Install Vim-Plug
-  shell: curl -fLo {{ lookup('env', 'HOME') }}/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  tags:
-    - install
-    - terminal
-    - dotfiles
-    - plugged
-    - neovim
-    - nvim
-
-- name: Install vim Plugins
-  ignore_errors: yes
-  shell: nvim -u ~/.config/nvim/plugins.vim +PlugInstall +qall
-  tags:
-    - install
-    - terminal
-    - dotfiles
-    - neovim
-    - nvim
-
 - name: Install pyflyby 
   shell: pipx install pyflyby --force 
   tags:
