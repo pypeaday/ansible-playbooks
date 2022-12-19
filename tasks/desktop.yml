@@ -139,7 +139,8 @@
     - v4l2loopback
 
 - name: rofimoji deps
-  apt: name=['fonts-emojione' , 'python3' , 'rofi' , 'xdotool' , 'xsel'] 
+  apt: 
+    name: ['fonts-emojione' , 'python3' , 'rofi' , 'xdotool' , 'xsel'] 
   become_user: root
   tags:
     - install
@@ -168,18 +169,18 @@
     - signal
 
 - name: install screenkey dependencies
-  apt: name={{item}}
-  with_items:
-    - libx11-6
-    - python3-gi
-    - gir1.2-gtk-3.0
-    - python3-cairo
-    - python3-setuptools
-    - python3-distutils-extra
-    - fonts-font-awesome
-    - gir1.2-appindicator3-0.1
-    - slop
-    - wget
+  apt:
+    name: 
+      - libx11-6
+      - python3-gi
+      - gir1.2-gtk-3.0
+      - python3-cairo
+      - python3-setuptools
+      - python3-distutils-extra
+      - fonts-font-awesome
+      - gir1.2-appindicator3-0.1
+      - slop
+      - wget
   tags:
      screenkey-source
     - never
