@@ -10,9 +10,6 @@
   community.general.pipx:
     name: 'python-lsp-server[all]'
 
-- name: Install MyPy in Python LSP
-  shell: pipx inject python-lsp-server pylsp-mypy
-
 - name: Install Jedi LSP
   community.general.pipx:
     name: jedi-language-server
