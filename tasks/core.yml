@@ -25,7 +25,7 @@
       - lm-sensors
       - lsof
       - lua5.1
-      - nala
+      # - nala
       - neofetch
       - ninja-build
       - nvtop
