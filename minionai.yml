@@ -1,0 +1,143 @@
+- name: "Deploy with Ansible"
+  hosts: minionai
+  gather_facts: true
+  vars:
+    # general
+    ansible_group: nic
+    ansible_user: nic
+    # docker
+    docker_compose_version: "1.29.1"
+    docker_apt_gpg_key: "https://download.docker.com/linux/ubuntu/gpg"
+    docker_apt_repository: "deb https://download.docker.com/linux/ubuntu focal stable"
+    docker_users:
+      - "{{ ansible_user }}"
+    # python/pyenv
+    pyenv_python27_version: "2.7.18"
+    pyenv_python37_version: "3.7.13"
+    pyenv_python38_version: "3.8.13"
+    pyenv_python39_version: "3.9.11"
+    pyenv_python310_version: "3.10.6"
+    pyenv_python311_version: "3.11-dev"
+    pyenv_enable_autocompletion: true
+    pyenv_python_versions:
+      - "{{ pyenv_python27_version }}"
+      - "{{ pyenv_python37_version }}"
+      - "{{ pyenv_python38_version }}"
+      - "{{ pyenv_python39_version }}"
+      - "{{ pyenv_python310_version }}"
+      - "{{ pyenv_python311_version }}"
+    pyenv_global: "3.10.6"
+    pyenv_path: "{{ lookup('env', 'HOME') }}/.pyenv"
+    pyenv_init_shell: false
+  pre_tasks:
+    - name: Update Apt
+      become: true
+      apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+      tags: 
+        - install
+        - dev
+        - core
+
+  roles:
+    - role: geerlingguy.docker
+      become: true
+      tags:
+        - install
+        - core
+        - docker
+        - skip_ansible_lint
+
+    - role: geerlingguy.ruby
+      become: true
+      tags:
+        - install
+        - core
+        - ruby
+    - role: staticdev.pyenv  # only supports install as user, not system
+      tags:
+        - core
+        - install
+        - python
+    # homebrew works!
+    # - role: monolithprojects.homebrew
+    - role: homebrew
+      tags: 
+        - core
+        - install
+        - brewski
+    # haven't added role to git yet
+    # - role: kvm-bridge-networking
+    #   tags: kvm-bridge-networking
+  tasks:
+    # core works!
+    - import_tasks: tasks/core.yml
+      tags: 
+        - install 
+        - core
+    - import_tasks: tasks/ssh-setup.yml
+      tags: 
+        - install 
+        - core
+        - ssh
+    - import_tasks: tasks/python-setup.yml
+      tags: 
+        - install 
+        - dev
+        - python
+    - import_tasks: tasks/node-setup.yml
+      tags:
+        - install 
+        - dev
+        - node
+    - import_tasks: tasks/npm-packages.yml
+      tags: 
+        - install 
+        - dev
+        - node
+    - import_tasks: tasks/cargo.yml
+      tags: 
+        - install 
+        - dev
+        - cargo
+    - import_tasks: tasks/stow.yml
+      tags: 
+        - install 
+        - dev
+        - stow
+    - import_tasks: tasks/zsh-setup.yml
+      tags: 
+        - install 
+        - dev
+        - zsh
+    - import_tasks: tasks/repos.yml
+      tags: 
+        - install 
+        - dev
+        - repos
+    - import_tasks: tasks/desktop.yml
+      tags:
+        - install 
+        - desktop
+    - import_tasks: tasks/nvim-setup.yml
+      tags: 
+        - install
+        - dev
+        - nvim
+        - doit
+    # - import_tasks: tasks/blah.yml  # not sure what to do with these
+    #     - blah
+    - import_tasks: tasks/brew.yml
+      tags:
+        - install
+        - dev
+        - brewski
+
+    - import_tasks: tasks/kitty.yml
+      tags:
+        - install
+        - dev
+        - kitty
+

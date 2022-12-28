@@ -1,0 +1,8 @@
+all:
+  hosts:
+    hogwarts:
+      ip: 192.168.1.8
+    babyblue:
+      ip:
+    minionai:
+      ip: 192.168.1.73
