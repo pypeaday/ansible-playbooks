@@ -1,8 +1,8 @@
 all:
   hosts:
     hogwarts:
-      ip: 192.168.1.8
+      ansible_host: hogwarts
     babyblue:
-      ip:
+      ansible_host:
     minionai:
-      ip: 192.168.1.73
+      ansible_host: minionai-vm 
