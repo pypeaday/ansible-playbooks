@@ -10,7 +10,7 @@
       - curl
       - dconf-editor
       - direnv
-      - exa
+      # - exa
       - ffmpeg
       - gettext
       - golang
