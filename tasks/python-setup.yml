@@ -1,3 +1,9 @@
+- name: Install pipx
+  ansible.builtin.pip:
+    executable: pip3.10  # requires pyenv role to run successfully
+    extra_args: --isolated
+    name: pipx
+
 - name: Install copier
   community.general.pipx:
     name: copier

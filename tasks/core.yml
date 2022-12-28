@@ -68,12 +68,6 @@
     dest: /etc/profile.d/custom-path.sh
     content: 'export "PATH=$PATH:~/.pyenv/bin:~/.local/bin"'
 
-- name: Install pipx
-  ansible.builtin.pip:
-    executable: pip3.10  # requires pyenv role to run successfully
-    extra_args: --isolated
-    name: pipx
-
 - name: ensure fonts directory
   file:
     path: "{{ lookup('env', 'HOME') }}/.fonts"
