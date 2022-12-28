@@ -62,12 +62,6 @@
 - name: add .local/bin
   shell: mkdir -p {{ lookup('env', 'HOME') }}/.local/bin
 
-- name: Add to system-wide $PATH.
-  become: true
-  copy:
-    dest: /etc/profile.d/custom-path.sh
-    content: 'export "PATH=$PATH:~/.pyenv/bin:~/.local/bin"'
-
 - name: ensure fonts directory
   file:
     path: "{{ lookup('env', 'HOME') }}/.fonts"
@@ -85,4 +79,3 @@
     #   become_user: root 
     dest: "{{ lookup('env', 'HOME') }}/.fonts/"
     remote_src: yes
-
