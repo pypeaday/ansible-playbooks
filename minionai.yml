@@ -28,7 +28,7 @@
       - "{{ pyenv_python311_version }}"
     pyenv_global: "3.10.6"
     pyenv_path: "{{ lookup('env', 'HOME') }}/.pyenv"
-    pyenv_init_shell: false
+    pyenv_init_shell: true
   pre_tasks:
     - name: Update Apt
       become: true
@@ -140,4 +140,3 @@
         - install
         - dev
         - kitty
-
