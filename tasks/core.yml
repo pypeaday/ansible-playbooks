@@ -70,7 +70,7 @@
 - name: JetBrains exists
   shell: "ls {{ lookup('env', 'HOME') }}/.fonts/JetBrains*Nerd*Font*Complete*"
   register: jb_exists
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Download JetBrains Mono
   when: jb_exists is failed
