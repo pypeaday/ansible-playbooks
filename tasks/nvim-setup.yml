@@ -3,8 +3,7 @@
   become: true
   tags:
     - install
-    - neovim
-      
+    - install-nvim 
 - name: Clone Neovim
   ansible.builtin.git:
     repo: 'https://github.com/neovim/neovim.git'
@@ -16,8 +15,7 @@
     - terminal
     - dotfiles
     - plugged
-    - neovim
-    - nvim
+    - install-nvim
 
 - name: Build neovim
   shell: "cd {{ lookup('env', 'HOME') }}/third-party/neovim && make -j 20"
