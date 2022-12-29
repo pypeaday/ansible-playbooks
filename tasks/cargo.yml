@@ -22,7 +22,7 @@
     - rust
 
 - name: add cargo to path
-  shell: PATH=~/.local/.cargo/bin:$PATH
+  shell: PATH={{ lookup('env', 'HOME') }}/.cargo/bin:$PATH && sh {{ lookup('env', 'HOME') }}/.cargo/env
   tags:
   - install
   - rust
