@@ -4,12 +4,13 @@
   tags:
     - install
     - install-nvim 
+
 - name: Clone Neovim
   ansible.builtin.git:
     repo: 'https://github.com/neovim/neovim.git'
     dest: "{{ lookup('env', 'HOME') }}/third-party/neovim"
     version: nightly
-  ignore_errors: yes
+  ignore_errors: true
   tags:
     - install
     - terminal
