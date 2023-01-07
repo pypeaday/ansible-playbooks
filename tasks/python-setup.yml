@@ -31,9 +31,9 @@
     name: black
     executable: "{{ global_pipx_alias }}"
 
-- name: Install Isort
+- name: Install Reorder Python Imports
   community.general.pipx:
-    name: isort
+    name: reorder-python-imports
     executable: "{{ global_pipx_alias }}"
 
 - name: Install flake8
