@@ -1,0 +1,60 @@
+- name: "Deploy with Ansible"
+  hosts: localhost
+  gather_facts: true
+  vars:
+    # general
+    ansible_group: rob
+    ansible_user: rob
+    # python/pyenv
+    pyenv_python310_version: "3.10.6"
+    pyenv_enable_autocompletion: true
+    pyenv_python_versions:
+      - "{{ pyenv_python310_version }}"
+    pyenv_global: "3.10.6"
+    pyenv_path: "{{ lookup('env', 'HOME') }}/.pyenv"
+    pyenv_init_shell: false
+  pre_tasks:
+    - name: Update Apt
+      become: true
+      apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+      tags:
+        - install
+        - dev
+        - core
+
+  roles:
+    - role: staticdev.pyenv # only supports install as user, not system
+      tags:
+        - core
+        - install
+        - python
+  tasks:
+    # core works!
+    - import_tasks: tasks/core.yml
+      tags:
+        - install
+        - core
+    - import_tasks: tasks/python-setup.yml
+      tags:
+        - install
+        - dev
+        - python
+    - import_tasks: tasks/stow.yml
+      tags:
+        - install
+        - dev
+        - stow
+    # - import_tasks: tasks/zsh-setup.yml
+    #   tags:
+    #     - install
+    #     - dev
+    #     - zsh
+    - import_tasks: tasks/nvim-setup.yml
+      tags:
+        - install
+        - dev
+        - nvim
+        - doit
