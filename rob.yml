@@ -3,8 +3,8 @@
   gather_facts: true
   vars:
     # general
-    ansible_group: rob
-    ansible_user: rob
+    ansible_group: roguefish
+    ansible_user: roguefish
     # python/pyenv
     pyenv_python310_version: "3.10.6"
     pyenv_enable_autocompletion: true
