@@ -41,11 +41,11 @@
         - install
         - dev
         - stow
-    # - import_tasks: tasks/zsh-setup.yml
-    #   tags:
-    #     - install
-    #     - dev
-    #     - zsh
+    - import_tasks: tasks/zsh-setup.yml
+      tags:
+        - install
+        - dev
+        - zsh
     - import_tasks: tasks/nvim-setup.yml
       tags:
         - install
