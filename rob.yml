@@ -25,12 +25,6 @@
         - dev
         - core
 
-  roles:
-    - role: staticdev.pyenv # only supports install as user, not system
-      tags:
-        - core
-        - install
-        - python
   tasks:
     # core works!
     - import_tasks: tasks/core.yml
