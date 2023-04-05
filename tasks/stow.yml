@@ -1,9 +1,8 @@
 - name: Clone dotfiles
   ansible.builtin.git:
-    repo: 'https://github.com/pypeaday/dotfiles.git'
+    repo: "https://github.com/pypeaday/dotfiles.git"
     dest: "{{ lookup('env', 'HOME') }}/dotfiles"
     update: no
-    version: home
   ignore_errors: yes
   tags:
     - install
