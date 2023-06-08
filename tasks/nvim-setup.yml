@@ -3,11 +3,11 @@
   become: true
   tags:
     - install
-    - install-nvim 
+    - install-nvim
 
 - name: Clone Neovim
   ansible.builtin.git:
-    repo: 'https://github.com/neovim/neovim.git'
+    repo: "https://github.com/neovim/neovim.git"
     dest: "{{ lookup('env', 'HOME') }}/third-party/neovim"
     version: nightly
   ignore_errors: true
@@ -42,7 +42,7 @@
     - neovim
     - nvim
 
-- name: Create python3 nvim environment 
+- name: Create python3 nvim environment
   when: pynvim_venv3_path.stat.islnk is not defined
   tags:
     - install
@@ -65,7 +65,7 @@
     - nvim
   shell: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim/bin/pip install pynvim"
 
-- name: Install pyflyby 
+- name: Install pyflyby
   shell: "{{ global_pipx_alias }} install pyflyby --force "
   tags:
     - install
