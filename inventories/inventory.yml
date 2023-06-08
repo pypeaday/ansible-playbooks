@@ -4,5 +4,7 @@ all:
       ansible_host: hogwarts
     babyblue:
       ansible_host:
+    cat:
+      ansible_host: localhost
     minionai:
-      ansible_host: minionai-vm 
+      ansible_host: minionai-vm
