@@ -66,7 +66,8 @@
   shell: "{{ lookup('env', 'HOME') }}/dotfiles/.venv/nvim/bin/pip install pynvim"
 
 - name: Install pyflyby
-  shell: "{{ global_pipx_alias }} install pyflyby --force "
+  shell: "python -m pipx install pyflyby --force "
+  ignore_errors: true
   tags:
     - install
     - python
