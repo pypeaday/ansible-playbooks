@@ -11,24 +11,6 @@
     docker_apt_repository: "deb https://download.docker.com/linux/ubuntu jammy stable"
     docker_users:
       - "{{ ansible_user }}"
-    # python/pyenv
-    pyenv_python27_version: "2.7.18"
-    pyenv_python37_version: "3.7.13"
-    pyenv_python38_version: "3.8.13"
-    pyenv_python39_version: "3.9.11"
-    pyenv_python310_version: "3.10.6"
-    pyenv_python311_version: "3.11-dev"
-    pyenv_enable_autocompletion: true
-    pyenv_python_versions:
-      - "{{ pyenv_python27_version }}"
-      - "{{ pyenv_python37_version }}"
-      - "{{ pyenv_python38_version }}"
-      - "{{ pyenv_python39_version }}"
-      - "{{ pyenv_python310_version }}"
-      - "{{ pyenv_python311_version }}"
-    pyenv_global: "3.10.6"
-    pyenv_path: "{{ lookup('env', 'HOME') }}/.pyenv"
-    pyenv_init_shell: false
   pre_tasks:
     - name: Update Apt
       become: true
@@ -56,11 +38,6 @@
         - install
         - core
         - ruby
-    - role: staticdev.pyenv  # only supports install as user, not system
-      tags:
-        - core
-        - install
-        - python
     # homebrew works!
     # - role: monolithprojects.homebrew
     - role: homebrew
@@ -140,4 +117,3 @@
         - install
         - dev
         - kitty
-
