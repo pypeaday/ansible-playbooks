@@ -59,11 +59,11 @@
         - install 
         - core
         - ssh
-    - import_tasks: tasks/python-setup.yml
-      tags: 
-        - install 
-        - dev
-        - python
+    # - import_tasks: tasks/python-setup.yml
+    #   tags:
+    #     - install
+    #     - dev
+    #     - python
     - import_tasks: tasks/node-setup.yml
       tags:
         - install 

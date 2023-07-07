@@ -1,18 +1,18 @@
-- name: Install pipx
-  ansible.builtin.pip:
-    executable: "{{ global_pip_alias }}" # requires pyenv role to run successfully
-    extra_args: --isolated
-    name: pipx
-
-- name: Install copier
-  community.general.pipx:
-    name: copier
-    executable: "{{ global_pipx_alias }}"
-  tags:
-    - copier
-    - install
-
-- name: Install doq
-  community.general.pipx:
-    name: doq
-    executable: "{{ global_pipx_alias }}"
+# - name: Install pipx
+#   ansible.builtin.pip:
+#     executable: "{{ global_pip_alias }}" # requires pyenv role to run successfully
+#     extra_args: --isolated
+#     name: pipx
+#
+# - name: Install copier
+#   community.general.pipx:
+#     name: copier
+#     executable: "{{ global_pipx_alias }}"
+#   tags:
+#     - copier
+#     - install
+#
+# - name: Install doq
+#   community.general.pipx:
+#     name: doq
+#     executable: "{{ global_pipx_alias }}"
