@@ -1,0 +1,31 @@
+---
+- name: Install Prerequisite software
+  apt:
+    pkg:
+      - debhelper
+      - libcapture-tiny-perl
+      - libconfig-inifiles-perl
+      - pv
+      - lzop
+      - mbuffer
+      - build-essential
+  tags:
+    - syncoid
+  ignore_errors: yes
+
+- name: copy systemd service
+  ansible.builtin.shell: sudo cp syncoid-replication.service /etc/systemd/system/
+  become: yes
+  ignore_errors: yes
+
+- name: copy systemd timer
+  ansible.builtin.shell: sudo cp syncoid-replication.timer /etc/systemd/system/
+  become: yes
+  ignore_errors: yes
+
+- name: Enable timer
+  become: yes
+  ansible.builtin.shell: |
+    # enable and start the syncoid timer
+    sudo systemctl enable syncoid-replication.timer
+    sudo systemctl start syncoid-replication.timer

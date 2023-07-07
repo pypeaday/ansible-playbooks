@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+
+  tasks:
+    - import_tasks: tasks/sanoid.yml
+      tags: sanoid

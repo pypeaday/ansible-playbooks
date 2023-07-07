@@ -1,0 +1,5 @@
+---
+- hosts: hogwarts
+
+  roles:
+    - role: kvm-bridge-networking

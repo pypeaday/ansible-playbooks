@@ -1,0 +1,34 @@
+---
+- name: Install KVM
+  apt:
+    pkg:
+      - qemu-kvm
+      - libvirt-daemon
+      - bridge-utils
+      - virtinst
+      - libvirt-daemon-system
+  tags:
+    - kvm
+
+- name: Install usefull VM tools
+  apt:
+    pkg:
+      - virt-top
+      - libguestfs-tools
+      - libosinfo-bin
+      - qemu-system
+      - virt-manager
+  tags:
+    - kvm
+
+- name: Ensure vhost_net module is loaded
+  ansible.builtin.shell: modprobe vhost_net
+  become: yes
+  tags:
+    - kvm
+
+- name: Add vhost_net to etc/modules
+  become: yes
+  ansible.builtin.shell: echo vhost_net | tee -a /etc/modules
+  tags:
+    - kvm
