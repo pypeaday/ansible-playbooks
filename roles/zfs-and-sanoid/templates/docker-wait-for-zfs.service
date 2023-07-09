@@ -1,0 +1,14 @@
+[Unit]
+Description=Wait for ZFS before starting Docker
+RequiredBy=docker.service
+Before=docker.service
+Requires=zfs.target
+After=zfs.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/true
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
