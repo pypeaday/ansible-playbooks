@@ -31,7 +31,7 @@
 - name: Copy sanoid.conf from dotfiles to /etc/sanoid
   become: yes
   when: backup_server == true
-  ansible.builtin.shell: sudo wget https://raw.githubusercontent.com/pypeaday/dotfiles/main/sanoid.backup-config.conf /etc/sanoid/sanoid.conf
+  ansible.builtin.shell: sudo wget https://raw.githubusercontent.com/pypeaday/dotfiles/main/sanoid.backup-config.conf && sudo mv sanoid.backup-config.conf /etc/sanoid/sanoid.conf
   tags:
     - sanoid
     - zfs
@@ -39,7 +39,7 @@
 - name: Copy sanoid.conf from dotfiles to /etc/sanoid
   become: yes
   when: primary_server == true
-  ansible.builtin.shell: sudo wget https://raw.githubusercontent.com/pypeaday/dotfiles/main/sanoid.nas-config.conf /etc/sanoid/sanoid.conf
+  ansible.builtin.shell: sudo wget https://raw.githubusercontent.com/pypeaday/dotfiles/main/sanoid.nas-config.conf && sudo mv sanoid.nas-config.conf /etc/sanoid/sanoid.conf
   tags:
     - sanoid
     - zfs
