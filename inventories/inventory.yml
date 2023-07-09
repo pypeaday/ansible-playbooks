@@ -2,6 +2,8 @@ all:
   hosts:
     hogwarts:
       ansible_host: hogwarts
+    ghost:
+      ansible_host: 192.168.1.9
     babyblue:
       ansible_host:
     cat:
