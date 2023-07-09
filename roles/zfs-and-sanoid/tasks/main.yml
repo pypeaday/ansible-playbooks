@@ -14,14 +14,14 @@
   ignore_errors: yes
 
 - name: git clone
-  ansible.builtin.shell: sudo git clone https://github.com/jimsalterjrs/sanoid.git $HOME/sanoid
+  ansible.builtin.shell: sudo git clone https://github.com/jimsalterjrs/sanoid.git /home/{{ansible_user}}/sanoid
   become: yes
   ignore_errors: yes
 
 - name: Checkout relevant latest stable release
   become: yes
   ansible.builtin.shell: |
-    cd {{ lookup('env', 'HOME') }}/sanoid
+    cd /home/{{ansible_user}}/sanoid
     # checkout latest stable release or stay on master for bleeding edge stuff (but expect bugs!)
     git checkout $(git tag | grep "^v" | tail -n 1)
     ln -s packages/debian .
