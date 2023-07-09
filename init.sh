@@ -3,6 +3,8 @@
 # Dry run option
 read -p "Do you want to do a dry run? (y/n): " dry_run
 
+sudo apt install gcc cmake libssl-dev zlib1g-dev build-essential ccache cifs-utils cmake curl dconf-editor direnv gettext htop libevent-dev libncurses5-dev libncursesw5-dev libpthread-stubs0-dev libtool libtool-bin lm-sensors lsof ninja-build openssh-server pkg-config virtualenv python3-dev python3-pip python3-venv ripgrep rename stow tar tree unzip libffi-dev fzf -y
+
 # Function to execute or print commands
 execute_or_print() {
   if [ "$dry_run" == "y" ] || [ "$dry_run" == "Y" ]; then
@@ -47,9 +49,11 @@ echo "Installing Pipx..."
 execute_or_print "python -m pip install --user pipx"
 execute_or_print "python -m pipx ensurepath"
 
+export PATH=$HOME/.local/bin:$PATH
+
 # Install Ansible with Pipx
 echo "Installing Ansible..."
-execute_or_print "pipx install ansible"
+execute_or_print "python -m pipx install ansible"
 
 # Notes for SSH in case I forget
 
