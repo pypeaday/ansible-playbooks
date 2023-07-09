@@ -18,7 +18,7 @@
         force_apt_get: true
         update_cache: true
         state: present
-      tags: 
+      tags:
         - install
         - dev
         - core
@@ -28,7 +28,6 @@
       become: true
       tags:
         - install
-        - core
         - docker
         - skip_ansible_lint
 
@@ -36,13 +35,11 @@
       become: true
       tags:
         - install
-        - core
         - ruby
     # homebrew works!
     # - role: monolithprojects.homebrew
     - role: homebrew
-      tags: 
-        - core
+      tags:
         - install
         - brewski
     # haven't added role to git yet
@@ -51,12 +48,12 @@
   tasks:
     # core works!
     - import_tasks: tasks/core.yml
-      tags: 
-        - install 
+      tags:
+        - install
         - core
     - import_tasks: tasks/ssh-setup.yml
-      tags: 
-        - install 
+      tags:
+        - install
         - core
         - ssh
     # - import_tasks: tasks/python-setup.yml
@@ -66,40 +63,40 @@
     #     - python
     - import_tasks: tasks/node-setup.yml
       tags:
-        - install 
+        - install
         - dev
         - node
     - import_tasks: tasks/npm-packages.yml
-      tags: 
-        - install 
+      tags:
+        - install
         - dev
         - node
     - import_tasks: tasks/cargo.yml
-      tags: 
-        - install 
+      tags:
+        - install
         - dev
         - cargo
     - import_tasks: tasks/stow.yml
-      tags: 
-        - install 
+      tags:
+        - install
         - dev
         - stow
     - import_tasks: tasks/zsh-setup.yml
-      tags: 
-        - install 
+      tags:
+        - install
         - dev
         - zsh
     - import_tasks: tasks/repos.yml
-      tags: 
-        - install 
+      tags:
+        - install
         - dev
         - repos
-    - import_tasks: tasks/desktop.yml
-      tags:
-        - install 
-        - desktop
+    # - import_tasks: tasks/desktop.yml
+    #   tags:
+    #     - install
+    #     - desktop
     - import_tasks: tasks/nvim-setup.yml
-      tags: 
+      tags:
         - install
         - dev
         - nvim

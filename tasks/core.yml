@@ -1,7 +1,7 @@
 - name: Install System Packages 1 (terminal)
   become: true
   apt:
-    name: 
+    name:
       - bat
       - build-essential
       - ccache
@@ -50,7 +50,6 @@
     - terminal
     - core
 
-
 # - name: check is fd installed
 #   shell: command -v fd
 #   register: fd_exists
@@ -76,6 +75,6 @@
   when: jb_exists is failed
   ansible.builtin.unarchive:
     src: https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/JetBrainsMono.zip
-    #   become_user: root 
+    #   become_user: root
     dest: "{{ lookup('env', 'HOME') }}/.fonts/"
     remote_src: yes
