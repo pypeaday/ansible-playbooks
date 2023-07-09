@@ -8,11 +8,6 @@
     backup_server: false
     primary_server: true
     do_syncoid: false
-    kvm_bridge_network_ip: 192.168.1.9/24
-    kvm_bridge_network_dns: 1.1.1.1
-    kvm_bridge_network_gateway: 192.168.1.1
-    # TODO: not sure if this is the right interface name yet
-    kvm_bridge_network_interface: eno1
   pre_tasks:
     - name: Update Apt
       become: true
@@ -27,7 +22,7 @@
     - import_tasks: tasks/stow.yml
     - import_tasks: tasks/zsh-setup.yml
     - import_tasks: tasks/nvim-setup.yml
-    - import_tasks: tasks/kvm.yml
+    # - import_tasks: tasks/kvm.yml
 
   roles:
     - role: zfs-and-sanoid
