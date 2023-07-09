@@ -1,3 +1,10 @@
+- name: Ensure third-party directory
+  shell: "mkdir {{ lookup('env', 'HOME') }}/third-party"
+  ignore_errors: true
+  tags:
+    - install
+    - install-nvim
+
 - name: Remove neovim
   shell: rm -rf "{{ lookup('env', 'HOME')  }}/third-party/neovim"
   become: true
