@@ -1,11 +1,6 @@
 ---
 - hosts: ghost
 
-  vars:
-    kvm_bridge_network_ip: 192.168.1.9/24
-    kvm_bridge_network_dns: 1.1.1.1
-    kvm_bridge_network_gateway: 192.168.1.1
-    kvm_bridge_network_interface: enp3s0
-
   roles:
     - role: kvm-bridge-networking
+      become: true

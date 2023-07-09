@@ -1,5 +1,5 @@
 ---
-- name: KVM Bridge Network Setup 
+- name: KVM Bridge Network Setup
   ansible.builtin.shell: echo "Starting KVM Bridge Network Setup"
 
 - name: Update apt-cache
@@ -11,7 +11,7 @@
 
 - name: Install some packages
   apt:
-    name: 
+    name:
       - qemu-kvm
       - libvirt-daemon-system
       - libvirt-clients
@@ -21,7 +21,7 @@
   register: result
   until: result is succeeded
 
-- name: Test virsh 
+- name: Test virsh
   ansible.builtin.shell: virsh list --all
 
 - name: Disable netfilter on bridges
@@ -30,13 +30,13 @@
     dest: /etc/sysctl.d/bridge.conf
   register: disable_netfilter
 
-- name: Add bridge rules 
+- name: Add bridge rules
   template:
     src: 99-bridge.rules
     dest: /etc/udev/rules.d/99-bridge.rules
   register: bridge_rules
 
-- name: Reboot for bridge rules to take effect 
+- name: Reboot for bridge rules to take effect
   reboot:
     reboot_timeout: 3600
 #### NEED TO REBOOT HERE FOR BRIDGE RULES TO TAKE EFFECT
@@ -47,7 +47,7 @@
 
 - name: Setup Bridge
   template:
-    src: 02-installer-config.yaml 
+    src: 02-installer-config.yaml
     dest: /etc/netplan/02-installer-config.yaml
   register: setup_bridge
 
