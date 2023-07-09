@@ -8,6 +8,11 @@
     backup_server: false
     primary_server: true
     do_syncoid: false
+    kvm_bridge_network_ip: 192.168.1.9/24
+    kvm_bridge_network_dns: 1.1.1.1
+    kvm_bridge_network_gateway: 192.168.1.1
+    # TODO: not sure if this is the right interface name yet
+    kvm_bridge_network_interface: eno1
   pre_tasks:
     - name: Update Apt
       become: true
