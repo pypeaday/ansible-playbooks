@@ -1,5 +1,6 @@
 ---
 - name: Install KVM
+  become: true
   apt:
     pkg:
       - qemu-kvm
@@ -11,6 +12,7 @@
     - kvm
 
 - name: Install usefull VM tools
+  become: true
   apt:
     pkg:
       - virt-top

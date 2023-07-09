@@ -5,9 +5,9 @@
     # general
     ansible_group: nic
     ansible_user: nic
-    backup_server: true
-    primary_server: false
-    do_syncoid: true
+    backup_server: false
+    primary_server: true
+    do_syncoid: false
   pre_tasks:
     - name: Update Apt
       become: true
@@ -22,3 +22,16 @@
     - import_tasks: tasks/stow.yml
     - import_tasks: tasks/zsh-setup.yml
     - import_tasks: tasks/nvim-setup.yml
+    - import_tasks: tasks/kvm.yml
+
+  roles:
+    - role: zfs-and-sanoid
+      become: true
+      tags:
+        - zfs
+    - role: geerlingguy.docker
+      become: true
+      tags:
+        - install
+        - docker
+        - skip_ansible_lint
