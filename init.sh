@@ -34,7 +34,7 @@ if [ "$install_tailscale" == "y" ] || [ "$install_tailscale" == "Y" ]; then
 
     # Start Tailscale
     echo "Starting Tailscale..."
-    execute_or_print "sudo tailscale up"
+    execute_or_print "sudo tailscale up --ssh"
 else
     echo "Skipping Tailscale installation."
 fi
