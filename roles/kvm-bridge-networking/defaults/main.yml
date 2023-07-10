@@ -1,4 +1,0 @@
-kvm_bridge_network_ip: 192.168.1.222/24
-kvm_bridge_network_dns: 1.1.1.1
-kvm_bridge_network_gateway: 192.168.1.1
-kvm_bridge_network_interface: eno1

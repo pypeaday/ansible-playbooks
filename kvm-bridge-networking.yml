@@ -1,6 +1,0 @@
----
-- hosts: ghost
-
-  roles:
-    - role: kvm-bridge-networking
-      become: true
