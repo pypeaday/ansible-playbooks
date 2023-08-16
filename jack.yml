@@ -1,0 +1,94 @@
+- name: "Deploy with Ansible"
+  hosts: localhost
+  gather_facts: true
+  vars:
+    # general
+    ansible_group: users
+    ansible_user: roberj39
+    # docker
+    docker_compose_version: "1.29.1"
+    docker_apt_gpg_key: "https://download.docker.com/linux/ubuntu/gpg"
+    docker_apt_repository: "deb https://download.docker.com/linux/ubuntu jammy stable"
+    docker_users:
+      - "{{ ansible_user }}"
+  pre_tasks:
+    - name: Update Apt
+      become: true
+      apt:
+        force_apt_get: true
+        update_cache: true
+        state: present
+      tags:
+        - install
+        - dev
+        - core
+  roles:
+    - role: geerlingguy.docker
+      become: true
+      tags:
+        - install
+        - docker
+        - skip_ansible_lint
+    # homebrew works!
+    - role: homebrew
+      tags:
+        - install
+        - brewski
+  tasks:
+    # core works!
+    - import_tasks: tasks/core.yml
+      tags:
+        - install
+        - core
+    - import_tasks: tasks/ssh-setup.yml
+      tags:
+        - install
+        - core
+        - ssh
+    - import_tasks: tasks/node-setup.yml
+      tags:
+        - install
+        - dev
+        - node
+    - import_tasks: tasks/npm-packages.yml
+      tags:
+        - install
+        - dev
+        - node
+    - import_tasks: tasks/cargo.yml
+      tags:
+        - install
+        - dev
+        - cargo
+    - import_tasks: tasks/stow.yml
+      tags:
+        - install
+        - dev
+        - stow
+    - import_tasks: tasks/zsh-setup.yml
+      tags:
+        - install
+        - dev
+        - zsh
+    - import_tasks: tasks/repos.yml
+      tags:
+        - install
+        - dev
+        - repos
+    # - import_tasks: tasks/desktop.yml
+    #   tags:
+    #     - install
+    #     - desktop
+    - import_tasks: tasks/nvim-setup.yml
+      tags:
+        - install
+        - dev
+        - nvim
+        - doit
+    # - import_tasks: tasks/blah.yml  # not sure what to do with these
+    #     - blah
+    - import_tasks: tasks/brew.yml
+      tags:
+        - install
+        - dev
+        - brewski
