@@ -16,5 +16,6 @@ A few notes:
 
 The `personal.yml` playbook sets up my development machine with my tooling - lots of those notes are found in my [dotfiles repo](https://www.github.com/pypeaday/dotfiles)
 
-The `zfs.yml` is for installing ZFS on Ubuntu based distros and setting up `sanoid` for snapshot management
+## ZFS
 
+ZFS setup is in a seperate repo [zfs-ops](https://www.github.com/pypeaday/zfs-ops)

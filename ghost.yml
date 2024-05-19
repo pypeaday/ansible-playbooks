@@ -25,10 +25,11 @@
     # - import_tasks: tasks/kvm.yml
 
   roles:
-    - role: zfs-and-sanoid
-      become: true
-      tags:
-        - zfs
+    # install using zfs-ops repo
+    # - role: zfs-and-sanoid
+    #   become: true
+    #   tags:
+    #     - zfs
     - role: geerlingguy.docker
       become: true
       tags:
