@@ -2,49 +2,10 @@
   hosts: localhost
   gather_facts: true
   vars:
-    # general
-    ansible_group: nic
-    ansible_user: nic
-    # docker
-    docker_compose_version: "1.29.1"
-    docker_apt_gpg_key: "https://download.docker.com/linux/ubuntu/gpg"
-    docker_apt_repository: "deb https://download.docker.com/linux/ubuntu jammy stable"
-    docker_users:
-      - "{{ ansible_user }}"
-  pre_tasks:
-    - name: Update Apt
-      become: true
-      apt:
-        force_apt_get: true
-        update_cache: true
-        state: present
-      tags:
-        - install
-        - dev
-        - core
+  pre_tasks: []
 
-  roles:
-    - role: geerlingguy.docker
-      become: true
-      tags:
-        - install
-        - docker
-        - skip_ansible_lint
+  roles: []
 
-    - role: geerlingguy.ruby
-      become: true
-      tags:
-        - install
-        - ruby
-    # homebrew works!
-    # - role: monolithprojects.homebrew
-    - role: homebrew
-      tags:
-        - install
-        - brewski
-    # haven't added role to git yet
-    # - role: kvm-bridge-networking
-    #   tags: kvm-bridge-networking
   tasks:
     # core works!
     - import_tasks: tasks/core.yml

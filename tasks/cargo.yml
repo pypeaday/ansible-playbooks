@@ -10,8 +10,8 @@
   get_url:
     url: https://sh.rustup.rs
     dest: /tmp/sh.rustup.rs
-    mode: '0755'
-    force: 'yes'
+    mode: "0755"
+    force: "yes"
   tags:
     - rust
 
@@ -24,22 +24,22 @@
 - name: add cargo to path
   shell: PATH={{ lookup('env', 'HOME') }}/.cargo/bin:$PATH && sh {{ lookup('env', 'HOME') }}/.cargo/env
   tags:
-  - install
-  - rust
+    - install
+    - rust
 
-- name: Install rg 
+- name: Install rg
   community.general.cargo:
     name: ripgrep
   tags:
     - cargo-packages
 
-- name: Install dust 
+- name: Install dust
   community.general.cargo:
     name: du-dust
   tags:
     - cargo-packages
 
-- name: Install ytop 
+- name: Install ytop
   community.general.cargo:
     name: ytop
   tags:
@@ -64,7 +64,13 @@
     - cargo-packages
 
 - name: install treesitter
-  community.general.cargo: 
+  community.general.cargo:
     name: tree-sitter-cli
+  tags:
+    - cargo-packages
+
+- name: install systemctl-tui
+  community.general.cargo:
+    name: systemctl-tui
   tags:
     - cargo-packages
