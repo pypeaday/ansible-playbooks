@@ -78,6 +78,7 @@
     name: America/Chicago
   become: true
   when: not containerenv.stat.exists
+  ignore_errors: true
 
 - name: Copy timezone from host (distrobox environment)
   ansible.builtin.shell: |
