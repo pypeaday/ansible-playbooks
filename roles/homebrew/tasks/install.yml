@@ -30,3 +30,12 @@
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_user_id }}"
     state: link
+
+- name: Initialize Homebrew
+  ansible.builtin.shell: |
+    export PATH="/home/{{ ansible_user_id }}/.linuxbrew/bin:$PATH"
+    /home/{{ ansible_user_id }}/.linuxbrew/bin/brew update --force --quiet
+  become_user: "{{ ansible_user_id }}"
+  become: yes
+  args:
+    executable: /bin/bash

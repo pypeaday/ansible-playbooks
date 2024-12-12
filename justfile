@@ -33,3 +33,15 @@ brew:
 # Check syntax only
 check:
     @just _run --check
+
+# Test with Ubuntu
+ubuntu:
+    ./test/test.sh
+
+# Test with Fedora
+fedora:
+    ./test/test.sh --os fedora
+
+# Test with Arch
+arch:
+    ./test/test.sh --os arch

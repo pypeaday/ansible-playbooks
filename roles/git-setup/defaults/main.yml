@@ -1,6 +1,6 @@
 ---
 # Default home directory
-home_dir: "{{ ansible_env.HOME }}"
+home_dir: "/home/{{ ansible_user_id }}"
 
 # Default username from the system
-username: "{{ ansible_env.USER }}"
+username: "{{ ansible_user_id }}"
