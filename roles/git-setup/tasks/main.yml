@@ -18,14 +18,14 @@
 
 - name: Check for existing SSH key
   ansible.builtin.stat:
-    path: "{{ home_dir }}/.ssh/id_ed25519"
+    path: "{{ home_dir }}/.ssh/id_{{ ansible_hostname }}"
   register: ssh_key
   become: false
 
-- name: Generate SSH key
+- name: Generate SSH key pair
   community.crypto.openssh_keypair:
-    path: "{{ home_dir }}/.ssh/id_ed25519"
+    path: "{{ home_dir }}/.ssh/id_{{ ansible_hostname }}"
     type: ed25519
-    comment: "{{ lookup('env', 'USERNAME') }}@{{ ansible_hostname }}"
+    comment: "{{ username }}@{{ ansible_hostname }}"
   when: not ssh_key.stat.exists
   become: false
