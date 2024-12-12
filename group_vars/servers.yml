@@ -1,0 +1,7 @@
+---
+# Variables for servers
+install_development_tools: false
+install_gui_tools: false
+setup_shell: true
+enable_ssh: true
+setup_monitoring: true

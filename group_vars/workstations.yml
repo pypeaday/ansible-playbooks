@@ -1,0 +1,5 @@
+---
+# Variables for development workstations
+install_development_tools: true
+install_gui_tools: true
+setup_shell: true

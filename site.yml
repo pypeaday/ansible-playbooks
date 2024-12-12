@@ -1,0 +1,22 @@
+---
+- name: Configure all machines
+  hosts: localhost
+  gather_facts: true
+
+  roles:
+    - role: base-system
+      tags: ['base']
+    
+    - role: homebrew
+      tags: ['brew']
+    
+    - role: git-setup
+      tags: ['git']
+    
+    - role: shell-setup
+      tags: ['shell']
+      when: setup_shell | default(true)
+    
+    - role: development
+      tags: ['dev']
+      when: install_development_tools | default(false)

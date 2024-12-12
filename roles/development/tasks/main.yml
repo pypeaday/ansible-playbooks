@@ -1,0 +1,78 @@
+---
+- name: Install Node.js and npm
+  ansible.builtin.get_url:
+    url: https://deb.nodesource.com/setup_lts.x
+    dest: /tmp/setup_node.sh
+  register: node_download
+  become: true
+
+- name: Run Node.js setup script
+  ansible.builtin.shell: |
+    set -o pipefail
+    bash /tmp/setup_node.sh | sudo -E bash -
+    apt-get install -y nodejs
+  args:
+    creates: /usr/bin/node
+  when: node_download.changed
+  become: true
+
+- name: Install Rust
+  ansible.builtin.get_url:
+    url: https://sh.rustup.rs
+    dest: /tmp/rustup.sh
+  register: rust_download
+  become: true
+
+- name: Run Rust setup script
+  ansible.builtin.shell: |
+    set -o pipefail
+    bash /tmp/rustup.sh -s -- -y
+  args:
+    creates: "{{ home_dir }}/.cargo/bin/rustc"
+  become: false
+  when: rust_download.changed
+
+- name: Install Zellij from GitHub
+  ansible.builtin.get_url:
+    url: "https://github.com/zellij-org/zellij/releases/download/{{ zellij_version }}/zellij-{{ zellij_version }}-linux-x86_64.tar.gz"
+    dest: /tmp/zellij.tar.gz
+  register: zellij_download
+  become: true
+
+- name: Extract Zellij
+  ansible.builtin.unarchive:
+    src: /tmp/zellij.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+  when: zellij_download.changed
+  become: true
+
+- name: Set permissions for Zellij
+  ansible.builtin.file:
+    path: /usr/local/bin/zellij
+    mode: '0755'
+  when: zellij_download.changed
+  become: true
+
+- name: Install direnv from GitHub
+  ansible.builtin.get_url:
+    url: "https://github.com/direnv/direnv/releases/download/{{ direnv_version }}/direnv.linux-amd64"
+    dest: /usr/local/bin/direnv
+    mode: '0755'
+  become: true
+
+- name: Install tree-sitter from GitHub
+  ansible.builtin.get_url:
+    url: "https://github.com/tree-sitter/tree-sitter/releases/download/{{ treesitter_version }}/tree-sitter-linux-x64.gz"
+    dest: /tmp/tree-sitter.gz
+  register: treesitter_download
+  become: true
+
+- name: Extract tree-sitter
+  ansible.builtin.shell: |
+    gunzip -c /tmp/tree-sitter.gz > /usr/local/bin/tree-sitter
+    chmod 755 /usr/local/bin/tree-sitter
+  args:
+    creates: /usr/local/bin/tree-sitter
+  when: treesitter_download.changed
+  become: true

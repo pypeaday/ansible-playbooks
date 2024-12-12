@@ -1,0 +1,5 @@
+---
+# Tool versions
+zellij_version: "v0.39.2"
+treesitter_version: "v0.20.9"
+direnv_version: "v2.33.0"

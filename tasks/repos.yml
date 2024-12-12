@@ -1,28 +1,28 @@
 - name: ensure personal git directory
   file:
-    path: "{{ lookup('env', 'HOME') }}/personal"
+    path: "{{ lookup('env', 'HOME') }}/projects/personal"
     state: directory
   tags:
-    - repos
+  - repos
 
 - name: ensure work directory
   file:
-    path: "{{ lookup('env', 'HOME') }}/work"
+    path: "{{ lookup('env', 'HOME') }}/projects/work"
     state: directory
   tags:
-    - repos
+  - repos
 
 - name: ensure third-party directory
   file:
-    path: "{{ lookup('env', 'HOME') }}/third-party"
+    path: "{{ lookup('env', 'HOME') }}/projects/third-party"
     state: directory
   tags:
-    - repos
+  - repos
 
 - name: Clone Blog
   ansible.builtin.git:
     repo: 'https://github.com/pypeaday/pype.dev.git'
-    dest: "{{ lookup('env', 'HOME') }}/personal/pype.dev"
+    dest: "{{ lookup('env', 'HOME') }}/projects/personal/pype.dev"
     update: no
 
 - name: Clone dotfiles
@@ -32,19 +32,12 @@
     update: no
   ignore_errors: yes
   tags:
-    - install
+  - install
 
-- name: Clone Nord Rofi Theme
-  ansible.builtin.git:
-    repo: 'https://github.com/undiabler/nord-rofi-theme.git'
-    dest: "{{ lookup('env', 'HOME') }}/third-party/nord-rofi-theme"
-    update: no
-
-- name: Clone fancy-motd 
+- name: Clone fancy-motd
   ansible.builtin.git:
     repo: 'https://github.com/pypeaday/fancy-motd.git'
-    dest: "{{ lookup('env', 'HOME') }}/personal/fancy-motd"
+    dest: "{{ lookup('env', 'HOME') }}/projects/personal/fancy-motd"
     update: no
   tags:
-    - motd
-
+  - motd

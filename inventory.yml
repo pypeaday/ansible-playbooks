@@ -1,0 +1,24 @@
+all:
+  children:
+    workstations:
+      hosts:
+        cat:
+          ansible_host: localhost
+        babyblue:
+          ansible_host: babyblue
+    servers:
+      hosts:
+        ghost:
+          ansible_host: 192.168.1.9
+        hogwarts:
+          ansible_host: hogwarts
+        minionai:
+          ansible_host: minionai-vm
+    
+    development:
+      children:
+        workstations:
+    
+    homelab:
+      children:
+        servers:

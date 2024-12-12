@@ -1,0 +1,31 @@
+---
+- name: Configure git global settings
+  ansible.builtin.git_config:
+    name: "{{ item.name }}"
+    scope: global
+    value: "{{ item.value }}"
+  with_items:
+    - { name: 'core.editor', value: 'vim' }
+    - { name: 'init.defaultBranch', value: 'main' }
+  become: false
+
+- name: Create SSH directory
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.ssh"
+    state: directory
+    mode: '0700'
+  become: false
+
+- name: Check for existing SSH key
+  ansible.builtin.stat:
+    path: "{{ home_dir }}/.ssh/id_ed25519"
+  register: ssh_key
+  become: false
+
+- name: Generate SSH key
+  community.crypto.openssh_keypair:
+    path: "{{ home_dir }}/.ssh/id_ed25519"
+    type: ed25519
+    comment: "{{ lookup('env', 'USERNAME') }}@{{ ansible_hostname }}"
+  when: not ssh_key.stat.exists
+  become: false

@@ -12,14 +12,14 @@ execute_or_print() {
   fi
 }
 
-# Install Pyenv
-echo "Installing Pyenv..."
-execute_or_print "curl https://pyenv.run | bash"
+# # Install Pyenv
+# echo "Installing Pyenv..."
+# execute_or_print "curl https://pyenv.run | bash"
 
-# Add Pyenv to the current shell session
-echo "Adding Pyenv to the shell session..."
-execute_or_print "export PATH=\"\$HOME/.pyenv/bin:\$PATH\""
-execute_or_print "eval \"\$(pyenv init -)\""
+# # Add Pyenv to the current shell session
+# echo "Adding Pyenv to the shell session..."
+# execute_or_print "export PATH=\"\$HOME/.pyenv/bin:\$PATH\""
+# execute_or_print "eval \"\$(pyenv init -)\""
 
 # Install Tailscale
 read -p "Do you want to install Tailscale? (y/n): " install_tailscale
@@ -37,10 +37,10 @@ else
     echo "Skipping Tailscale installation."
 fi
 
-# Install Python 3.10.11 with Pyenv
-echo "Installing Python 3.10.11..."
-execute_or_print "pyenv install 3.10.11"
-execute_or_print "pyenv global 3.10.11"
+# # Install Python 3.10.11 with Pyenv
+# echo "Installing Python 3.10.11..."
+# execute_or_print "pyenv install 3.10.11"
+# execute_or_print "pyenv global 3.10.11"
 
 # Install Pipx
 echo "Installing Pipx..."
