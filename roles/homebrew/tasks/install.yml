@@ -1,23 +1,32 @@
 ---
+- name: Ensure .linuxbrew directory exists
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user_id }}/.linuxbrew"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0755'
+
 - name: Clone Homebrew GitHub repo
   ansible.builtin.git:
     repo: "{{ homebrew_git_repo }}"
-    dest: "/home/{{ homebrew_user }}/.linuxbrew/Homebrew"
+    dest: "/home/{{ ansible_user_id }}/.linuxbrew/Homebrew"
     version: "{{ homebrew_release }}"
-  become_user: "{{ homebrew_user }}"
+  become_user: "{{ ansible_user_id }}"
   become: yes
 
 - name: Create bin directory for brew
   ansible.builtin.file:
-    path: "/home/{{ homebrew_user }}/.linuxbrew/bin"
+    path: "/home/{{ ansible_user_id }}/.linuxbrew/bin"
     state: directory
-    owner: "{{ homebrew_user }}"
-    group: "{{ homebrew_user }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0755'
 
 - name: Create a symbolic link for brew
   ansible.builtin.file:
-    src: "/home/{{ homebrew_user }}/.linuxbrew/Homebrew/bin/brew"
-    dest: "/home/{{ homebrew_user }}/.linuxbrew/bin/brew"
-    owner: "{{ homebrew_user }}"
-    group: "{{ homebrew_user }}"
+    src: "/home/{{ ansible_user_id }}/.linuxbrew/Homebrew/bin/brew"
+    dest: "/home/{{ ansible_user_id }}/.linuxbrew/bin/brew"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
     state: link
