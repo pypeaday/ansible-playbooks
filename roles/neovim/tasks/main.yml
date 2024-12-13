@@ -1,0 +1,14 @@
+---
+- name: Check if neovim is installed
+  ansible.builtin.command: which nvim
+  register: nvim_check
+  ignore_errors: true
+  changed_when: false
+  become: false
+
+- name: Install neovim via Homebrew
+  community.general.homebrew:
+    name: neovim
+    state: present
+  when: nvim_check.rc != 0
+  become: false

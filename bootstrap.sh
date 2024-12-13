@@ -34,9 +34,21 @@ install_python() {
 install_ansible() {
     # Ensure pipx is in PATH
     export PATH="$HOME/.local/bin:$PATH"
+
+    # check if /usr/bin/python exists
+    if [ ! -f /usr/bin/python ]; then
+        echo "Error: /usr/bin/python does not exist"
+        # this is not actually changing the python interpreter
+        # PIPX_DEFAULT_PYTHON="/usr/bin/python3" pipx install --force ansible-core
+        # symlink /usr/bin/python to /usr/bin/python3
+        sudo ln -s /usr/bin/python3 /usr/bin/python
+        # install ansible-core using pipx
+        pipx install --force ansible-core
+    else
+        # Install ansible-core using pipx
+        pipx install --force ansible-core
+    fi
     
-    # Install ansible-core using pipx
-    pipx install --force ansible-core
 
     # Ensure ansible is in PATH by reloading it
     hash -r

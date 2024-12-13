@@ -16,13 +16,13 @@
 - name: Install k9s
   ansible.builtin.get_url:
     url: "https://github.com/derailed/k9s/releases/download/v{{ k9s_version }}/k9s_Linux_amd64.tar.gz"
-    dest: /tmp/k9s.tar.gz
+    dest: /tmp/ansible-playbooks-setup/k9s.tar.gz
   register: k9s_download
   become: true
 
 - name: Extract k9s
   ansible.builtin.unarchive:
-    src: /tmp/k9s.tar.gz
+    src: /tmp/ansible-playbooks-setup/k9s.tar.gz
     dest: /usr/local/bin
     remote_src: yes
   when: k9s_download.changed
@@ -38,13 +38,13 @@
 - name: Install kubecm
   ansible.builtin.get_url:
     url: "https://github.com/sunny0826/kubecm/releases/download/{{ kubecm_version }}/kubecm_{{ kubecm_version }}_Linux_x86_64.tar.gz"
-    dest: /tmp/kubecm.tar.gz
+    dest: /tmp/ansible-playbooks-setup/kubecm.tar.gz
   register: kubecm_download
   become: true
 
 - name: Extract kubecm
   ansible.builtin.unarchive:
-    src: /tmp/kubecm.tar.gz
+    src: /tmp/ansible-playbooks-setup/kubecm.tar.gz
     dest: /usr/local/bin
     remote_src: yes
   when: kubecm_download.changed

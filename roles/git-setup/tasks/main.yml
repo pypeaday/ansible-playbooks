@@ -34,13 +34,13 @@
 - name: Install lazygit
   ansible.builtin.get_url:
     url: "https://github.com/jesseduffield/lazygit/releases/download/v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
-    dest: /tmp/lazygit.tar.gz
+    dest: /tmp/ansible-playbooks-setup/lazygit.tar.gz
   register: lazygit_download
   become: true
 
 - name: Extract lazygit
   ansible.builtin.unarchive:
-    src: /tmp/lazygit.tar.gz
+    src: /tmp/ansible-playbooks-setup/lazygit.tar.gz
     dest: /usr/local/bin
     remote_src: yes
   when: lazygit_download.changed

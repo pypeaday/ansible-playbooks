@@ -2,13 +2,13 @@
 - name: Install Terraform
   ansible.builtin.get_url:
     url: "https://releases.hashicorp.com/terraform/{{ terraform_version | replace('v', '') }}/terraform_{{ terraform_version | replace('v', '') }}_linux_amd64.zip"
-    dest: /tmp/terraform.zip
+    dest: /tmp/ansible-playbooks-setup/terraform.zip
   register: terraform_download
   become: true
 
 - name: Extract Terraform
   ansible.builtin.unarchive:
-    src: /tmp/terraform.zip
+    src: /tmp/ansible-playbooks-setup/terraform.zip
     dest: /usr/local/bin
     remote_src: yes
   when: terraform_download.changed

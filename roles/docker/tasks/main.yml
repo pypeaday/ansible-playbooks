@@ -9,13 +9,13 @@
 - name: Install lazydocker
   ansible.builtin.get_url:
     url: "https://github.com/jesseduffield/lazydocker/releases/download/v{{ lazydocker_version }}/lazydocker_{{ lazydocker_version }}_Linux_x86_64.tar.gz"
-    dest: /tmp/lazydocker.tar.gz
+    dest: /tmp/ansible-playbooks-setup/lazydocker.tar.gz
   register: lazydocker_download
   become: true
 
 - name: Extract lazydocker
   ansible.builtin.unarchive:
-    src: /tmp/lazydocker.tar.gz
+    src: /tmp/ansible-playbooks-setup/lazydocker.tar.gz
     dest: /usr/local/bin
     remote_src: yes
   when: lazydocker_download.changed

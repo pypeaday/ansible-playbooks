@@ -4,6 +4,7 @@ default:
 
 # Run ansible-playbook with common options
 _run *args:
+    mkdir -p /tmp/ansible-playbooks-setup
     ansible-playbook -i inventory.yml --limit localhost site.yml {{args}}
 
 # Configure everything (development machine)
@@ -12,27 +13,31 @@ all:
 
 # Configure as server (base + docker + git + shell)
 server:
-    @just _run --tags "base,git,shell,docker" -e "install_docker=true"
+    @just _run --tags "base,brew,neovim,git,shell,docker" -e "install_docker=true"
 
 # Install development tools
 dev:
-    @just _run --tags "base,git,shell,dev,brew" -e "install_development_tools=true" -e "install_docker=true"
+    @just _run --tags "base,brew,neovim,git,shell,dev" -e "install_development_tools=true" -e "install_docker=true"
 
 # Setup shell configuration
 shell:
-    @just _run --tags shell
+    @just _run --tags "brew,neovim,shell"
 
 # Setup git configuration
 git:
     @just _run --tags git
 
-# Setup base system
+# Install base system packages
 base:
-    @just _run --tags base
+    @just _run --tags "base,brew,neovim"
 
 # Setup brew
 brew:
     @just _run --tags brew
+
+# Setup neovim
+neovim:
+    @just _run --tags neovim
 
 # Check syntax only
 check:

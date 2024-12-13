@@ -29,6 +29,8 @@
       - lsof
       # Misc
       - lua5.1
+      - luajit 
+      - liblua5.1-0-dev
       - nvtop
       - vifm
       - webp
@@ -43,30 +45,6 @@
     state: directory
     mode: '0755'
   become: false
-
-- name: Install Neovim from GitHub
-  ansible.builtin.get_url:
-    url: "https://github.com/neovim/neovim/releases/download/{{ neovim_version }}/nvim-linux64.tar.gz"
-    dest: /tmp/neovim.tar.gz
-  register: neovim_download
-  become: true
-
-- name: Extract Neovim
-  ansible.builtin.unarchive:
-    src: /tmp/neovim.tar.gz
-    dest: /tmp
-    remote_src: yes
-  when: neovim_download.changed
-  become: true
-
-- name: Move Neovim
-  ansible.builtin.copy:
-    src: /tmp/nvim-linux64/bin/nvim
-    dest: /usr/local/bin/nvim
-    mode: '0755'
-    remote_src: true
-  when: neovim_download.changed
-  become: true
 
 - name: Check if running in distrobox
   ansible.builtin.stat:
@@ -91,13 +69,13 @@
 - name: Install fzf from GitHub
   ansible.builtin.get_url:
     url: "https://github.com/junegunn/fzf/releases/download/v{{ fzf_version }}/fzf-{{ fzf_version }}-linux_amd64.tar.gz"
-    dest: /tmp/fzf.tar.gz
+    dest: /tmp/ansible-playbooks-setup/fzf.tar.gz
   register: fzf_download
   become: true
 
 - name: Extract fzf
   ansible.builtin.unarchive:
-    src: /tmp/fzf.tar.gz
+    src: /tmp/ansible-playbooks-setup/fzf.tar.gz
     dest: /usr/local/bin
     remote_src: yes
   when: fzf_download.changed
@@ -113,21 +91,21 @@
 - name: Install Atuin from GitHub
   ansible.builtin.get_url:
     url: "https://github.com/atuinsh/atuin/releases/download/{{ atuin_version }}/atuin-x86_64-unknown-linux-gnu.tar.gz"
-    dest: /tmp/atuin.tar.gz
+    dest: /tmp/ansible-playbooks-setup/atuin.tar.gz
   register: atuin_download
   become: true
 
 - name: Extract Atuin
   ansible.builtin.unarchive:
-    src: /tmp/atuin.tar.gz
-    dest: /tmp/
+    src: /tmp/ansible-playbooks-setup/atuin.tar.gz
+    dest: /tmp/ansible-playbooks-setup/
     remote_src: yes
   when: atuin_download.changed
   become: true
 
 - name: Move Atuin
   ansible.builtin.copy:
-    src: /tmp/atuin-x86_64-unknown-linux-gnu/atuin
+    src: /tmp/ansible-playbooks-setup/atuin-x86_64-unknown-linux-gnu/atuin
     dest: /usr/local/bin/atuin
     mode: '0755'
     remote_src: true
@@ -144,13 +122,13 @@
 - name: Install ripgrep from GitHub
   ansible.builtin.get_url:
     url: "https://github.com/BurntSushi/ripgrep/releases/download/{{ ripgrep_version }}/ripgrep-{{ ripgrep_version }}-x86_64-unknown-linux-musl.tar.gz"
-    dest: /tmp/ripgrep.tar.gz
+    dest: /tmp/ansible-playbooks-setup/ripgrep.tar.gz
   register: ripgrep_download
   become: true
 
 - name: Extract ripgrep
   ansible.builtin.unarchive:
-    src: /tmp/ripgrep.tar.gz
+    src: /tmp/ansible-playbooks-setup/ripgrep.tar.gz
     dest: /usr/local/bin
     remote_src: yes
     extra_opts: --strip-components=1
@@ -167,13 +145,13 @@
 - name: Install dust from GitHub
   ansible.builtin.get_url:
     url: "https://github.com/bootandy/dust/releases/download/{{ dust_version }}/dust-{{ dust_version }}-x86_64-unknown-linux-musl.tar.gz"
-    dest: /tmp/dust.tar.gz
+    dest: /tmp/ansible-playbooks-setup/dust.tar.gz
   register: dust_download
   become: true
 
 - name: Extract dust
   ansible.builtin.unarchive:
-    src: /tmp/dust.tar.gz
+    src: /tmp/ansible-playbooks-setup/dust.tar.gz
     dest: /usr/local/bin
     remote_src: yes
     extra_opts: --strip-components=1
@@ -190,13 +168,13 @@
 - name: Install bandwhich from GitHub
   ansible.builtin.get_url:
     url: "https://github.com/imsnif/bandwhich/releases/download/{{ bandwhich_version }}/bandwhich-{{ bandwhich_version }}-x86_64-unknown-linux-musl.tar.gz"
-    dest: /tmp/bandwhich.tar.gz
+    dest: /tmp/ansible-playbooks-setup/bandwhich.tar.gz
   register: bandwhich_download
   become: true
 
 - name: Extract bandwhich
   ansible.builtin.unarchive:
-    src: /tmp/bandwhich.tar.gz
+    src: /tmp/ansible-playbooks-setup/bandwhich.tar.gz
     dest: /usr/local/bin
     remote_src: yes
   when: bandwhich_download.changed
@@ -219,13 +197,13 @@
 - name: Install grex from GitHub
   ansible.builtin.get_url:
     url: "https://github.com/pemistahl/grex/releases/download/{{ grex_version }}/grex-{{ grex_version }}-x86_64-unknown-linux-musl.tar.gz"
-    dest: /tmp/grex.tar.gz
+    dest: /tmp/ansible-playbooks-setup/grex.tar.gz
   register: grex_download
   become: true
 
 - name: Extract grex
   ansible.builtin.unarchive:
-    src: /tmp/grex.tar.gz
+    src: /tmp/ansible-playbooks-setup/grex.tar.gz
     dest: /usr/local/bin
     remote_src: yes
   when: grex_download.changed
@@ -241,13 +219,13 @@
 - name: Install systemctl-tui from GitHub
   ansible.builtin.get_url:
     url: "https://github.com/rgwood/systemctl-tui/releases/download/{{ systemctl_tui_version }}/systemctl-tui-x86_64-unknown-linux-musl.tar.gz"
-    dest: /tmp/systemctl-tui.tar.gz
+    dest: /tmp/ansible-playbooks-setup/systemctl-tui.tar.gz
   register: systemctl_tui_download
   become: true
 
 - name: Extract systemctl-tui
   ansible.builtin.unarchive:
-    src: /tmp/systemctl-tui.tar.gz
+    src: /tmp/ansible-playbooks-setup/systemctl-tui.tar.gz
     dest: /usr/local/bin
     remote_src: yes
   when: systemctl_tui_download.changed
@@ -263,13 +241,13 @@
 - name: Install bottom
   ansible.builtin.get_url:
     url: "https://github.com/ClementTsang/bottom/releases/download/{{ bottom_version }}/bottom_x86_64-unknown-linux-gnu.tar.gz"
-    dest: /tmp/bottom.tar.gz
+    dest: /tmp/ansible-playbooks-setup/bottom.tar.gz
   register: ytop_download
   become: true
 
 - name: Extract bottom
   ansible.builtin.unarchive:
-    src: /tmp/bottom.tar.gz
+    src: /tmp/ansible-playbooks-setup/bottom.tar.gz
     dest: /usr/local/bin
     remote_src: yes
   when: ytop_download.changed
@@ -291,13 +269,13 @@
 - name: Install Starship prompt
   ansible.builtin.get_url:
     url: https://starship.rs/install.sh
-    dest: /tmp/install_starship.sh
+    dest: /tmp/ansible-playbooks-setup/install_starship.sh
   register: starship_download
   become: true
 
 - name: Run Starship install script
   ansible.builtin.shell: |
-    sh /tmp/install_starship.sh --yes
+    sh /tmp/ansible-playbooks-setup/install_starship.sh --yes
   args:
     creates: /usr/local/bin/starship
     executable: /bin/sh

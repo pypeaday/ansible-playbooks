@@ -6,7 +6,7 @@ A collection of Ansible playbooks for setting up development machines and server
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/pypeaday/ansible-playbooks.git
+   git clone https://github.com/yourusername/ansible-playbooks.git
    cd ansible-playbooks
    ```
 
@@ -28,8 +28,18 @@ A collection of Ansible playbooks for setting up development machines and server
 - Essential system packages and utilities
 - Development tools (git, tmux, etc.)
 - System monitoring tools (htop, btm)
-- Text editors (Neovim)
 - Terminal utilities (fzf, bandwhich, tealdeer)
+
+### Homebrew (`homebrew`)
+- Installs Homebrew package manager
+- Configures Homebrew paths
+- Manages Homebrew formulae
+- Required for Neovim installation
+
+### Neovim (`neovim`)
+- Installs Neovim via Homebrew
+- Ensures consistent installation across different systems
+- Requires Homebrew role
 
 ### Git Setup (`git-setup`)
 - Configures global git settings
@@ -61,28 +71,24 @@ A collection of Ansible playbooks for setting up development machines and server
 - Adds user to docker group
 - Installs lazydocker
 
-### Homebrew (`homebrew`)
-- Installs Homebrew package manager
-- Configures Homebrew paths
-- Manages Homebrew formulae
-
 ## Usage
 
 ### Common Commands
 
 ```bash
-just dev     # Setup development environment (base + git + shell + dev tools + brew)
-just server  # Basic server setup (base + git + shell + docker)
+just dev     # Setup development environment (base + brew + neovim + git + shell + dev tools)
+just server  # Basic server setup (base + brew + neovim + git + shell + docker)
 just all     # Install everything
 ```
 
 ### Individual Components
 
 ```bash
-just base    # Install base system only
+just base    # Install base system packages (includes brew and neovim)
 just git     # Setup git configuration
-just shell   # Setup shell configuration
+just shell   # Setup shell configuration (includes brew and neovim)
 just brew    # Install Homebrew
+just neovim  # Install Neovim via Homebrew
 ```
 
 ### Testing
@@ -93,6 +99,14 @@ just ubuntu  # Test on Ubuntu
 just fedora  # Test on Fedora
 just arch    # Test on Arch Linux
 ```
+
+## Role Dependencies
+
+The roles are executed in the following order to ensure proper dependencies:
+1. `base-system`: Core system packages
+2. `homebrew`: Package manager (required for Neovim)
+3. `neovim`: Text editor installation
+4. Other roles (git, shell, development, docker)
 
 ## Inventory Structure
 
@@ -127,3 +141,4 @@ Key variables that control role execution:
 - Docker installation requires root privileges
 - Some roles (like development) are opt-in and need to be explicitly enabled
 - The bootstrap script installs all necessary dependencies
+- Neovim is installed via Homebrew to ensure consistency across systems and containers
