@@ -52,6 +52,7 @@ A collection of Ansible playbooks for setting up development machines and server
 - Sets up Starship prompt
 - Configures direnv
 - Adds useful shell aliases and functions
+- Installs JetBrains Mono Nerd Font
 
 ### Development Tools (`development`)
 - Node.js and npm

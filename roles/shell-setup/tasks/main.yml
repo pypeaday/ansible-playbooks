@@ -27,3 +27,19 @@
     - zsh-users/zsh-autosuggestions
     - zsh-users/zsh-syntax-highlighting
   become: false
+
+# check if JetBransMonoNerdFont is installed
+- name: Check if JetBransMonoNerdFont is installed
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.fonts/JetBrainsMonoNerdFont"
+    state: directory
+  become: false
+  register: jet_brans_mono_nerd_font_installed
+
+- name: Install JetBransMonoNerdFont
+  ansible.builtin.git:
+    repo: "https://github.com/ryanoasis/nerd-fonts.git"
+    dest: "{{ home_dir }}/.fonts/JetBrainsMonoNerdFont"
+    depth: 1
+  become: false
+  when: jet_brans_mono_nerd_font_installed.stat.exists is false
