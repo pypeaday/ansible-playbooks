@@ -12,3 +12,5 @@ kubecm_version: "v0.32.0"
 
 # Infrastructure tools versions
 terraform_version: "1.6.6"
+
+bws_version: "0.5.0"

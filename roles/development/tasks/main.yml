@@ -87,3 +87,20 @@
   tags:
     - terraform
     - infra
+
+- name: Install Bitwarden Secrets Manager CLI
+  ansible.builtin.get_url:
+    url: "https://github.com/bitwarden/sdk-sm/releases/download/bws-v{{ bws_version }}/bws-x86_64-unknown-linux-gnu-{{ bws_version }}.zip"
+    dest: /tmp/ansible-playbooks-setup/bitwarden-cli.gz
+  register: bws_download
+  become: true
+
+- name: Extract bitwarden-cli
+  ansible.builtin.shell: |
+    gunzip -c /tmp/ansible-playbooks-setup/bitwarden-cli.gz > /usr/local/bin/bws
+    chmod 755 /usr/local/bin/bws
+  args:
+    creates: /usr/local/bin/bws
+    executable: /bin/bash
+  when: bws_download.changed
+  become: true
