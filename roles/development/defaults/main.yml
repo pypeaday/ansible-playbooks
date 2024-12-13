@@ -1,5 +1,14 @@
 ---
 # Tool versions
-zellij_version: "v0.39.2"
-treesitter_version: "v0.20.9"
-direnv_version: "v2.33.0"
+zellij_version: "0.39.2"
+treesitter_version: "0.20.9"
+direnv_version: "2.33.0"
+
+# Kubernetes tools versions
+kubectl_version: "v1.29.0"
+helm_version: "3.13.3"
+k9s_version: "0.31.5"
+kubecm_version: "v0.32.0"
+
+# Infrastructure tools versions
+terraform_version: "1.6.6"

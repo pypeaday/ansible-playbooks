@@ -4,3 +4,5 @@ home_dir: "/home/{{ ansible_user_id }}"
 
 # Default username from the system
 username: "{{ ansible_user_id }}"
+
+lazygit_version: "0.44.1"

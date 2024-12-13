@@ -1,6 +1,6 @@
 ---
 - name: Configure all machines
-  hosts: localhost
+  hosts: all
   gather_facts: true
 
   roles:
@@ -16,6 +16,15 @@
     - role: shell-setup
       tags: ['shell']
       when: setup_shell | default(true)
+    
+    - role: geerlingguy.docker
+      tags: ['docker', 'dev']
+      when: install_docker | default(false)
+      become: true
+
+    - role: docker
+      tags: ['docker', 'dev']
+      when: install_docker | default(false)
     
     - role: development
       tags: ['dev']

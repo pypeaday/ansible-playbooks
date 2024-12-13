@@ -27,6 +27,12 @@ RUN pipx install ansible
 # Add local bin to PATH
 ENV PATH="/home/testuser/.local/bin:${PATH}"
 
+# Bootstrap
+COPY --chown=testuser:testuser ./requirements.yml /home/testuser/ansible-playbooks/requirements.yml
+COPY --chown=testuser:testuser ./bootstrap.sh /home/testuser/ansible-playbooks/bootstrap.sh
+RUN chmod +x /home/testuser/ansible-playbooks/bootstrap.sh && \
+    /home/testuser/ansible-playbooks/bootstrap.sh
+
 # Copy playbooks
 COPY --chown=testuser:testuser . /home/testuser/ansible-playbooks/
 

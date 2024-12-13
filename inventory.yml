@@ -2,23 +2,25 @@ all:
   children:
     workstations:
       hosts:
-        cat:
+        localhost:
           ansible_host: localhost
+          ansible_connection: local
         babyblue:
-          ansible_host: babyblue
+          ansible_host: localhost
+          ansible_connection: local
     servers:
+      # assumes tailscale
       hosts:
         ghost:
-          ansible_host: 192.168.1.9
-        hogwarts:
-          ansible_host: hogwarts
-        minionai:
-          ansible_host: minionai-vm
-    
+          ansible_host: ghost
+        ghost-vault:
+          ansible_host: ghost-vault
+
     development:
       children:
         workstations:
-    
+
+
     homelab:
       children:
         servers:

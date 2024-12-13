@@ -51,7 +51,7 @@ install_ansible() {
     # Install required collections
     ansible-galaxy collection install community.general
     ansible-galaxy collection install community.crypto
-
+    ansible-galaxy install -r requirements.yml
 }
 
 # Install just command runner

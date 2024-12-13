@@ -1,0 +1,29 @@
+---
+- name: Add user account to Docker group
+  become: true
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes
+
+- name: Install lazydocker
+  ansible.builtin.get_url:
+    url: "https://github.com/jesseduffield/lazydocker/releases/download/v{{ lazydocker_version }}/lazydocker_{{ lazydocker_version }}_Linux_x86_64.tar.gz"
+    dest: /tmp/lazydocker.tar.gz
+  register: lazydocker_download
+  become: true
+
+- name: Extract lazydocker
+  ansible.builtin.unarchive:
+    src: /tmp/lazydocker.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+  when: lazydocker_download.changed
+  become: true
+
+- name: Set permissions for lazydocker
+  ansible.builtin.file:
+    path: /usr/local/bin/lazydocker
+    mode: '0755'
+  when: lazydocker_download.changed
+  become: true

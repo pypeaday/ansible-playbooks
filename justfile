@@ -4,15 +4,19 @@ default:
 
 # Run ansible-playbook with common options
 _run *args:
-    ansible-playbook site.yml {{args}}
+    ansible-playbook -i inventory.yml --limit localhost site.yml {{args}}
 
-# Configure everything
+# Configure everything (development machine)
 all:
-    @just _run
+    @just _run -e "install_development_tools=true" -e "install_docker=true" -e "setup_shell=true"
+
+# Configure as server (base + docker + git + shell)
+server:
+    @just _run --tags "base,git,shell,docker" -e "install_docker=true"
 
 # Install development tools
 dev:
-    @just _run --tags dev
+    @just _run --tags "base,git,shell,dev,brew" -e "install_development_tools=true" -e "install_docker=true"
 
 # Setup shell configuration
 shell:

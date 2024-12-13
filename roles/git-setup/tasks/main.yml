@@ -7,6 +7,7 @@
   with_items:
     - { name: 'core.editor', value: 'vim' }
     - { name: 'init.defaultBranch', value: 'main' }
+    - { name: 'credential.helper', value: 'store' }
   become: false
 
 - name: Create SSH directory
@@ -29,3 +30,26 @@
     comment: "{{ username }}@{{ ansible_hostname }}"
   when: not ssh_key.stat.exists
   become: false
+
+- name: Install lazygit
+  ansible.builtin.get_url:
+    url: "https://github.com/jesseduffield/lazygit/releases/download/v{{ lazygit_version }}/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
+    dest: /tmp/lazygit.tar.gz
+  register: lazygit_download
+  become: true
+
+- name: Extract lazygit
+  ansible.builtin.unarchive:
+    src: /tmp/lazygit.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+  when: lazygit_download.changed
+  become: true
+
+- name: Set permissions for lazygit
+  ansible.builtin.file:
+    path: /usr/local/bin/lazygit
+    mode: '0755'
+  when: lazygit_download.changed
+  become: true
+

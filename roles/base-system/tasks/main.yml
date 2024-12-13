@@ -275,7 +275,7 @@
   when: ytop_download.changed
   become: true
 
-- name: Set permissions for ytop
+- name: Set permissions for bottom
   ansible.builtin.file:
     path: /usr/local/bin/btm
     mode: '0755'
