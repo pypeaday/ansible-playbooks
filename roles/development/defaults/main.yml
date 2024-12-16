@@ -14,3 +14,5 @@ kubecm_version: "v0.32.0"
 terraform_version: "1.6.6"
 
 bws_version: "0.5.0"
+
+skm_version: "0.8.6"

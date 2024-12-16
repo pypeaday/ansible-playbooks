@@ -104,3 +104,20 @@
     executable: /bin/bash
   when: bws_download.changed
   become: true
+
+- name: Install skm SSH key manager
+  ansible.builtin.get_url:
+    url: "https://github.com/TimothyYe/skm/releases/download/v{{ skm_version }}/skm_{{ skm_version }}_Linux_x86_64.tar.gz"
+    dest: /tmp/ansible-playbooks-setup/skm.tar.gz
+  register: skm_download
+  become: true
+
+- name: Extract skm
+  ansible.builtin.shell: |
+    gunzip -c /tmp/ansible-playbooks-setup/skm.gz > /usr/local/bin/skm
+    chmod 755 /usr/local/bin/skm
+  args:
+    creates: /usr/local/bin/skm
+    executable: /bin/bash
+  when: skm_download.changed
+  become: true
