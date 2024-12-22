@@ -121,3 +121,7 @@
     executable: /bin/bash
   when: skm_download.changed
   become: true
+
+- name: Install fly cli
+  ansible.builtin.shell: curl -L https://fly.io/install.sh | sh
+
