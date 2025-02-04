@@ -5,7 +5,7 @@ default:
 # Run ansible-playbook with common options
 _run *args:
     mkdir -p /tmp/ansible-playbooks-setup
-    ansible-playbook -i inventory.yml --limit localhost site.yml {{args}}
+    ansible-playbook -K -i inventory.yml --limit localhost site.yml {{args}}
 
 # Configure everything (development machine)
 all:
