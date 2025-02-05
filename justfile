@@ -11,9 +11,9 @@ _run *args:
 all:
     @just _run -e "install_development_tools=true" -e "install_docker=true" -e "setup_shell=true"
 
-# Configure as server (base + docker + git + shell)
+# Configure as server (base + docker + git + shell + cockpit)
 server:
-    @just _run --tags "base,brew,neovim,git,shell,docker" -e "install_docker=true"
+    @just _run --tags "base,brew,neovim,git,shell,docker" -e "install_docker=true" -e "install_cockpit=true"
 
 # Install development tools
 dev:

@@ -1,0 +1,14 @@
+---
+- name: Install Cockpit
+  apt:
+    name: 
+      - cockpit
+      - cockpit-machines
+    state: present
+    update_cache: yes
+
+- name: Enable and start cockpit.socket
+  systemd:
+    name: cockpit.socket
+    enabled: yes
+    state: started
