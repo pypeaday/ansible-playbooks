@@ -12,6 +12,7 @@
       - openssh-server
       - tar
       - tree
+      - libc6
       # Development tools
       - tmux
       - git
@@ -65,6 +66,10 @@
   become: true
   when: containerenv.stat.exists
   ignore_errors: true
+
+- name: Install just
+  ansible.builtin.shell: |
+    curl -LsSf https://astral.sh/uv/install.sh | sh
 
 - name: Install fzf from GitHub
   ansible.builtin.get_url:
