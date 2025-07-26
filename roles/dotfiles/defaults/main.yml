@@ -1,0 +1,23 @@
+---
+# Dotfiles repository (SSH format for private repos)
+dotfiles_repo: "git@github.com:{{ github_username }}/dotfiles.git"
+
+# Local directory to clone dotfiles
+dotfiles_dir: "{{ home_dir }}/dotfiles"
+
+# GitHub username (override this)
+github_username: "your-username"
+
+# Optional: URL to download SSH key from your server
+# Example: "https://your-server.com/api/ssh-key/dotfiles"
+# dotfiles_ssh_key_url: ""
+
+# Backup existing dotfiles before symlinking
+backup_dotfiles: true
+
+# Dotfiles installation method preference
+# auto: detect install.sh, then stow, then manual
+# install_script: use install.sh only
+# stow: use GNU stow only  
+# manual: create symlinks manually
+dotfiles_method: "auto"

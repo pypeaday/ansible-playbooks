@@ -1,0 +1,72 @@
+---
+- name: Check if dotfiles directory exists
+  ansible.builtin.stat:
+    path: "{{ dotfiles_dir }}"
+  register: dotfiles_exists
+
+- name: Create temporary SSH key for dotfiles access
+  ansible.builtin.tempfile:
+    state: file
+    suffix: _dotfiles_key
+  register: temp_ssh_key
+  when: dotfiles_ssh_key_url is defined
+
+- name: Download SSH key for dotfiles access
+  ansible.builtin.get_url:
+    url: "{{ dotfiles_ssh_key_url }}"
+    dest: "{{ temp_ssh_key.path }}"
+    mode: '0600'
+  when: dotfiles_ssh_key_url is defined and temp_ssh_key is defined
+
+- name: Clone dotfiles repository (with SSH key URL)
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_dir }}"
+    key_file: "{{ temp_ssh_key.path }}"
+    accept_hostkey: yes
+    force: yes
+  when: dotfiles_ssh_key_url is defined and temp_ssh_key is defined
+  become: false
+
+- name: Clone dotfiles repository (with existing SSH key)
+  ansible.builtin.git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_dir }}"
+    accept_hostkey: yes
+    force: yes
+  when: dotfiles_ssh_key_url is not defined
+  become: false
+
+- name: Clean up temporary SSH key
+  ansible.builtin.file:
+    path: "{{ temp_ssh_key.path }}"
+    state: absent
+  when: temp_ssh_key is defined
+
+- name: Check if dotfiles has install script
+  ansible.builtin.stat:
+    path: "{{ dotfiles_dir }}/install.sh"
+  register: install_script
+
+- name: Make install script executable
+  ansible.builtin.file:
+    path: "{{ dotfiles_dir }}/install.sh"
+    mode: '0755'
+  when: install_script.stat.exists
+  become: false
+
+- name: Run dotfiles install script
+  ansible.builtin.shell: |
+    cd "{{ dotfiles_dir }}"
+    ./install.sh
+  when: install_script.stat.exists
+  become: false
+
+- name: Display dotfiles installation status
+  ansible.builtin.debug:
+    msg: |
+      Dotfiles installed from {{ dotfiles_repo }}
+      Location: {{ dotfiles_dir }}
+      {% if install_script.stat.exists %}
+      Used install script: {{ dotfiles_dir }}/install.sh
+      {% endif %}

@@ -1,0 +1,75 @@
+---
+- name: Ensure .ssh directory exists
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.ssh"
+    state: directory
+    mode: '0700'
+  become: false
+
+- name: Generate SSH key if it doesn't exist
+  ansible.builtin.openssh_keypair:
+    path: "{{ home_dir }}/.ssh/id_ed25519"
+    type: ed25519
+    comment: "{{ username }}@{{ ansible_hostname }}"
+    force: false
+  become: false
+  register: ssh_key_generated
+
+- name: Set proper permissions on SSH private key
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.ssh/id_ed25519"
+    mode: '0600'
+  become: false
+
+- name: Set proper permissions on SSH public key
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.ssh/id_ed25519.pub"
+    mode: '0644'
+  become: false
+
+- name: Display SSH public key
+  ansible.builtin.debug:
+    msg: "SSH public key: {{ lookup('file', home_dir + '/.ssh/id_ed25519.pub') }}"
+  when: ssh_key_generated.changed
+
+- name: Create SSH config if it doesn't exist
+  ansible.builtin.copy:
+    content: |
+      # SSH Client Configuration
+      Host *
+          AddKeysToAgent yes
+          UseKeychain yes
+          IdentityFile ~/.ssh/id_ed25519
+          
+      # GitHub
+      Host github.com
+          HostName github.com
+          User git
+          IdentityFile ~/.ssh/id_ed25519
+          
+      # GitLab
+      Host gitlab.com
+          HostName gitlab.com
+          User git
+          IdentityFile ~/.ssh/id_ed25519
+    dest: "{{ home_dir }}/.ssh/config"
+    mode: '0600'
+    force: false
+  become: false
+
+- name: Install skm with installer
+  ansible.builtin.shell: |
+    curl -L i.paynepride.com/TimothyYe/skm! | bash
+  become: true
+
+- name: Initialize skm store
+  ansible.builtin.shell: |
+    skm init
+  args:
+    creates: "{{ home_dir }}/.skm"
+    executable: /bin/bash
+  become: false
+  environment:
+    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+
+# TODO: Figure out skm restore... can treat skm directory like ssh key maybe as general first initial setup to the bootstrap process even...

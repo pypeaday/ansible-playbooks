@@ -1,0 +1,91 @@
+---
+- name: Install uv Python package manager
+  ansible.builtin.shell: |
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+  args:
+    creates: "{{ home_dir }}/.cargo/bin/uv"
+    executable: /bin/bash
+  become: false
+
+- name: Add uv to PATH in shell profile
+  ansible.builtin.lineinfile:
+    path: "{{ home_dir }}/.zshrc"
+    line: 'export PATH="$HOME/.cargo/bin:$PATH"'
+    create: yes
+    state: present
+  become: false
+
+- name: Install Python build dependencies
+  ansible.builtin.package:
+    name:
+      - build-essential
+      - libssl-dev
+      - zlib1g-dev
+      - libbz2-dev
+      - libreadline-dev
+      - libsqlite3-dev
+      - curl
+      - libncursesw5-dev
+      - xz-utils
+      - tk-dev
+      - libxml2-dev
+      - libxmlsec1-dev
+      - libffi-dev
+      - liblzma-dev
+    state: present
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Install Python build dependencies (Fedora)
+  ansible.builtin.package:
+    name:
+      - gcc
+      - openssl-devel
+      - bzip2-devel
+      - libffi-devel
+      - zlib-devel
+      - readline-devel
+      - sqlite-devel
+      - xz-devel
+      - tk-devel
+    state: present
+  become: true
+  when: ansible_os_family == "RedHat"
+
+- name: Install latest Python using uv
+  ansible.builtin.shell: |
+    source {{ home_dir }}/.cargo/env
+    uv python install {{ python_version | default('3.12') }}
+  args:
+    executable: /bin/bash
+  become: false
+  environment:
+    PATH: "{{ home_dir }}/.cargo/bin:{{ ansible_env.PATH }}"
+
+- name: Set default Python version
+  ansible.builtin.shell: |
+    source {{ home_dir }}/.cargo/env
+    uv python pin {{ python_version | default('3.12') }}
+  args:
+    executable: /bin/bash
+    chdir: "{{ home_dir }}"
+  become: false
+  environment:
+    PATH: "{{ home_dir }}/.cargo/bin:{{ ansible_env.PATH }}"
+
+- name: Create global uv configuration
+  ansible.builtin.file:
+    path: "{{ home_dir }}/.config/uv"
+    state: directory
+    mode: '0755'
+  become: false
+
+- name: Configure uv settings
+  ansible.builtin.copy:
+    content: |
+      [tool.uv]
+      python-preference = "managed"
+      compile-bytecode = true
+    dest: "{{ home_dir }}/.config/uv/uv.toml"
+    mode: '0644'
+  become: false

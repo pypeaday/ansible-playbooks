@@ -1,60 +1,61 @@
 # Ansible Playbooks
 
-A collection of Ansible playbooks for setting up development machines and servers. These playbooks automate the installation and configuration of various development tools, system utilities, and server components.
+Modern Ansible playbooks for configuring development machines and servers with improved reliability, Python management via uv, and SSH key management.
 
-## Quick Start
+## 🚀 Quick Start
 
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/ansible-playbooks.git
-   cd ansible-playbooks
-   ```
-
-2. Run the bootstrap script:
+1. **Bootstrap the environment:**
    ```bash
    ./bootstrap.sh
    ```
+   This installs Python, Ansible, and the `just` command runner with improved error handling.
 
-3. Choose your setup:
+2. **Configure everything:**
    ```bash
-   just dev    # For a full development environment
-   just server # For a basic server setup
-   just all    # For everything
+   just all
    ```
 
-## Roles
+## 📋 Available Commands
 
-### Base System (`base-system`)
-- Essential system packages and utilities
-- Development tools (git, tmux, etc.)
-- System monitoring tools (htop, btm)
-- Terminal utilities (fzf, bandwhich, tealdeer)
+### Main Configurations
+- `just all` - Configure everything (development machine with Python/uv, SSH keys, etc.)
+- `just server` - Configure as server (base + docker + git + shell + cockpit + Python + SSH)
+- `just dev` - Install development tools with modern Python management
 
-### Homebrew (`homebrew`)
-- Installs Homebrew package manager
-- Configures Homebrew paths
-- Manages Homebrew formulae
-- Required for Neovim installation
+### Individual Components
+- `just python` - Setup Python with uv package manager
+- `just ssh` - Setup SSH key management
+- `just shell` - Setup shell configuration (Zsh + Oh My Zsh)
+- `just git` - Setup git configuration
+- `just base` - Install base system packages
+- `just brew` - Setup homebrew
+- `just neovim` - Setup neovim
 
-### Neovim (`neovim`)
-- Installs Neovim via Homebrew
-- Ensures consistent installation across different systems
-- Requires Homebrew role
+### Utilities
+- `just check` - Check syntax only
+- `just ubuntu` - Test with Ubuntu
+- `just fedora` - Test with Fedora
 
-### Git Setup (`git-setup`)
-- Configures global git settings
-- Sets up SSH keys
-- Installs lazygit
-- Configures git credential helper
+## 🔧 Roles
 
-### Shell Setup (`shell-setup`)
-- Configures ZSH with modern tools
-- Sets up Starship prompt
-- Configures direnv
-- Adds useful shell aliases and functions
-- Installs JetBrains Mono Nerd Font
+### Base System
+- **Multi-distro support**: Ubuntu/Debian, Fedora/RHEL, Arch Linux
+- Essential packages and utilities
+- Improved error handling and distribution detection
 
-### Development Tools (`development`)
+### Python with uv (NEW)
+- **Modern Python management** using [uv](https://github.com/astral-sh/uv) instead of pyenv
+- Faster, lighter, and more reliable than traditional Python version managers
+- Automatic Python version installation and management
+- Global package management with uv
+
+### SSH Key Management (NEW)
+- **Automated SSH key generation** (Ed25519)
+- **SSH config management** with GitHub/GitLab defaults
+- **SKM integration** for multiple key management
+- **FastAPI-based key sharing service** (see `ssh-key-manager/`)
+
+### Development
 - Node.js and npm
 - Rust and Cargo
 - Zellij terminal multiplexer

@@ -16,23 +16,35 @@
     - role: git-setup
       tags: ['git']
     
+    - role: ssh-keys
+      tags: ['ssh', 'keys']
+      when: setup_ssh_keys | default(true) | bool
+    
+    - role: python-uv
+      tags: ['python', 'uv']
+      when: install_python_uv | default(true) | bool
+    
     - role: shell-setup
       tags: ['shell']
-      when: setup_shell | default(true)
+      when: setup_shell | default(true) | bool
+    
+    - role: dotfiles
+      tags: ['dotfiles']
+      when: setup_dotfiles | default(false) | bool
     
     - role: development
       tags: ['dev']
-      when: install_development_tools | default(false)
+      when: install_development_tools | default(false) | bool
     
     - role: geerlingguy.docker
       tags: ['docker', 'dev']
-      when: install_docker | default(false)
+      when: install_docker | default(false) | bool
       become: true
 
     - role: docker
       tags: ['docker', 'dev']
-      when: install_docker | default(false)
+      when: install_docker | default(false) | bool
 
     - role: cockpit
       tags: ['cockpit']
-      when: install_cockpit | default(false)
+      when: install_cockpit | default(false) | bool

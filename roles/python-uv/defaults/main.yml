@@ -1,0 +1,18 @@
+---
+# Default Python version to install
+python_version: "3.12"
+
+# Whether to install common Python development tools
+install_python_dev_tools: true
+
+# Common Python packages to install globally
+python_global_packages:
+  - pip
+  - setuptools
+  - wheel
+  - black
+  - flake8
+  - mypy
+  - pytest
+  - ipython
+  - jupyter

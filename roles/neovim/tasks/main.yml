@@ -10,5 +10,11 @@
   community.general.homebrew:
     name: neovim
     state: present
+    path: "{{ home_dir }}/.linuxbrew/bin"
   when: nvim_check.rc != 0
   become: false
+  environment:
+    PATH: "{{ home_dir }}/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
+    HOMEBREW_PREFIX: "{{ home_dir }}/.linuxbrew"
+    HOMEBREW_CELLAR: "{{ home_dir }}/.linuxbrew/Cellar"
+    HOMEBREW_REPOSITORY: "{{ home_dir }}/.linuxbrew/Homebrew"
