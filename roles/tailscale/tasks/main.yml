@@ -1,0 +1,13 @@
+---
+- name: Check if tailscale is installed
+  ansible.builtin.command: which tailscale
+  register: tailscale_check
+  ignore_errors: true
+  changed_when: false
+  become: true
+
+- name: Install tailscale via curl
+  ansible.builtin.shell: |
+    curl -fsSL https://tailscale.com/install.sh | sh
+  when: tailscale_check.rc != 0
+  become: true

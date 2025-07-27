@@ -20,6 +20,10 @@
       tags: ['ssh', 'keys']
       when: setup_ssh_keys | default(true) | bool
     
+    - role: tailscale
+      tags: ['tailscale']
+      when: setup_tailscale | default(true) | bool
+    
     - role: python-uv
       tags: ['python', 'uv']
       when: install_python_uv | default(true) | bool

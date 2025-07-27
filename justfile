@@ -9,15 +9,15 @@ _run *args:
 
 # Configure everything (development machine)
 all:
-    @just _run -e install_development_tools=true -e install_docker=true -e setup_shell=true -e install_python_uv=true -e setup_ssh_keys=true
+    @just _run -e setup_tailscale=true -e install_development_tools=true -e install_docker=true -e setup_shell=true -e install_python_uv=true -e setup_ssh_keys=true
 
 # Configure as server (base + docker + git + shell + cockpit)
 server:
-    @just _run --tags "base,brew,neovim,git,ssh,python,shell,docker" -e install_docker=true -e install_cockpit=true -e install_python_uv=true -e setup_ssh_keys=true
+    @just _run --tags "base,brew,neovim,git,ssh,python,shell,docker,tailscale" -e setup_tailscale=true -e install_docker=true -e install_cockpit=true -e install_python_uv=true -e setup_ssh_keys=true
 
 # Install development tools
 dev:
-    @just _run --tags "base,brew,neovim,git,ssh,python,shell,dev" -e install_development_tools=true -e install_docker=true -e install_python_uv=true -e setup_ssh_keys=true
+    @just _run --tags "base,brew,neovim,git,ssh,python,shell,dev" -e setup_tailscale=true -e install_development_tools=true -e install_docker=true -e install_python_uv=true -e setup_ssh_keys=true
 
 # Setup shell configuration
 shell:
@@ -37,7 +37,7 @@ dotfiles:
 
 # Full setup including dotfiles
 full:
-    @just _run -e install_development_tools=true -e install_docker=true -e setup_shell=true -e install_python_uv=true -e setup_ssh_keys=true -e setup_dotfiles=true
+    @just _run -e setup_tailscale=true -e install_development_tools=true -e install_docker=true -e setup_shell=true -e install_python_uv=true -e setup_ssh_keys=true -e setup_dotfiles=true
 
 # Setup git configuration
 git:
@@ -54,6 +54,10 @@ brew:
 # Setup neovim
 neovim:
     @just _run --tags neovim
+
+# Setup tailscale
+tailscale:
+    @just _run --tags tailscale -e setup_tailscale=true
 
 # Check syntax only
 check:
