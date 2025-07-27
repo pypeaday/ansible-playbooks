@@ -4,16 +4,47 @@ Modern Ansible playbooks for configuring development machines and servers with i
 
 ## 🚀 Quick Start
 
-1. **Bootstrap the environment:**
-   ```bash
-   ./bootstrap.sh
-   ```
-   This installs Python, Ansible, and the `just` command runner with improved error handling.
+### 1. Set up SSH Authentication
 
-2. **Configure everything:**
-   ```bash
-   just all
-   ```
+Before starting, ensure you have access to your SSH keys. You have two options:
+
+#### Option A: Using existing SSH keys
+If you have your SSH keys already set up, the bootstrap script will detect and use them automatically.
+
+#### Option B: Using a temporary key from a server
+If you need to download a key from a server, set the `SSH_KEY_URL` environment variable:
+
+```bash
+export SSH_KEY_URL="https://your-server.com/ssh-key"
+```
+
+### 2. Run the Dotfiles Bootstrap
+
+The `dotfiles-bootstrap.sh` script will handle cloning your dotfiles and running the installation:
+
+```bash
+# Make the script executable
+chmod +x dotfiles-bootstrap.sh
+
+# Run the bootstrap script (customize the REPO if needed)
+REPO="git@github.com:yourusername/dotfiles.git" ./dotfiles-bootstrap.sh
+```
+
+The script will:
+1. Check for existing SSH keys
+2. Attempt to clone your dotfiles repository
+3. If needed, download a temporary SSH key from the specified URL
+4. Run the dotfiles installation script
+
+### 3. Bootstrap the System
+
+```bash
+# Run the Ansible bootstrap to set up the environment
+./bootstrap.sh
+
+# Configure everything
+just all
+```
 
 ## 📋 Available Commands
 
