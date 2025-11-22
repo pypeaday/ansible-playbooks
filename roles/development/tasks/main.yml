@@ -32,50 +32,19 @@
   become: false
   when: rust_download.changed
 
-- name: Install Zellij from GitHub
-  ansible.builtin.get_url:
-    url: "https://github.com/zellij-org/zellij/releases/download/v{{ zellij_version }}/zellij-x86_64-unknown-linux-musl.tar.gz"
-    dest: /tmp/ansible-playbooks-setup/zellij.tar.gz
-  register: zellij_download
-  become: true
-
-- name: Extract Zellij
-  ansible.builtin.unarchive:
-    src: /tmp/ansible-playbooks-setup/zellij.tar.gz
-    dest: /usr/local/bin
-    remote_src: yes
-  when: zellij_download.changed
-  become: true
-
-- name: Set permissions for Zellij
-  ansible.builtin.file:
-    path: /usr/local/bin/zellij
-    mode: '0755'
-  when: zellij_download.changed
-  become: true
-
-- name: Install direnv from GitHub
-  ansible.builtin.get_url:
-    url: "https://github.com/direnv/direnv/releases/download/v{{ direnv_version }}/direnv.linux-amd64"
-    dest: /usr/local/bin/direnv
-    mode: '0755'
-  become: true
-
-- name: Install tree-sitter from GitHub
-  ansible.builtin.get_url:
-    url: "https://github.com/tree-sitter/tree-sitter/releases/download/v{{ treesitter_version }}/tree-sitter-linux-x64.gz"
-    dest: /tmp/ansible-playbooks-setup/tree-sitter.gz
-  register: treesitter_download
-  become: true
-
-- name: Extract tree-sitter
+- name: Install Zellij with installer
   ansible.builtin.shell: |
-    gunzip -c /tmp/ansible-playbooks-setup/tree-sitter.gz > /usr/local/bin/tree-sitter
-    chmod 755 /usr/local/bin/tree-sitter
-  args:
-    creates: /usr/local/bin/tree-sitter
-    executable: /bin/bash
-  when: treesitter_download.changed
+    curl -L i.paynepride.com/zellij-org/zellij! | bash
+  become: true
+
+- name: Install direnv with installer
+  ansible.builtin.shell: |
+    curl -L i.paynepride.com/direnv/direnv! | bash
+  become: true
+
+- name: Install tree-sitter with installer
+  ansible.builtin.shell: |
+    curl -L i.paynepride.com/tree-sitter/tree-sitter! | bash
   become: true
 
 - include_tasks: kubernetes.yml
@@ -88,38 +57,14 @@
     - terraform
     - infra
 
-- name: Install Bitwarden Secrets Manager CLI
-  ansible.builtin.get_url:
-    url: "https://github.com/bitwarden/sdk-sm/releases/download/bws-v{{ bws_version }}/bws-x86_64-unknown-linux-gnu-{{ bws_version }}.zip"
-    dest: /tmp/ansible-playbooks-setup/bitwarden-cli.gz
-  register: bws_download
-  become: true
-
-- name: Extract bitwarden-cli
+- name: Install Bitwarden Secrets Manager CLI with installer
   ansible.builtin.shell: |
-    gunzip -c /tmp/ansible-playbooks-setup/bitwarden-cli.gz > /usr/local/bin/bws
-    chmod 755 /usr/local/bin/bws
-  args:
-    creates: /usr/local/bin/bws
-    executable: /bin/bash
-  when: bws_download.changed
+    curl -L i.paynepride.com/bitwarden/sdk-sm! | bash
   become: true
 
-- name: Install skm SSH key manager
-  ansible.builtin.get_url:
-    url: "https://github.com/TimothyYe/skm/releases/download/v{{ skm_version }}/skm_{{ skm_version }}_Linux_x86_64.tar.gz"
-    dest: /tmp/ansible-playbooks-setup/skm.tar.gz
-  register: skm_download
-  become: true
-
-- name: Extract skm
+- name: Install skm SSH key manager with installer
   ansible.builtin.shell: |
-    gunzip -c /tmp/ansible-playbooks-setup/skm.gz > /usr/local/bin/skm
-    chmod 755 /usr/local/bin/skm
-  args:
-    creates: /usr/local/bin/skm
-    executable: /bin/bash
-  when: skm_download.changed
+    curl -L i.paynepride.com/TimothyYe/skm! | bash
   become: true
 
 - name: Install fly cli

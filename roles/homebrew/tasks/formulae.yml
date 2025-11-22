@@ -1,9 +1,9 @@
 ---
 - name: Install Formula
   ansible.builtin.shell: |
-    export PATH="/home/{{ ansible_user_id }}/.linuxbrew/bin:$PATH"
+    export PATH="/home/{{ ansible_facts['user_id'] }}/.linuxbrew/bin:$PATH"
     brew install {{ brew_formulae | join(' ') }}
-  become_user: "{{ ansible_user_id }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
   become: yes
   args:
     executable: /bin/bash

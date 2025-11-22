@@ -1,20 +1,21 @@
 ---
-- name: Check if neovim is installed
-  ansible.builtin.command: which nvim
-  register: nvim_check
-  ignore_errors: true
-  changed_when: false
-  become: false
+- name: Download neovim tarball from GitHub releases
+  ansible.builtin.get_url:
+    url: "https://github.com/neovim/neovim/releases/download/{{ neovim_version }}/nvim-linux64.tar.gz"
+    dest: "/tmp/nvim-linux64.tar.gz"
+    mode: '0644'
+  become: true
 
-- name: Install neovim via Homebrew
-  community.general.homebrew:
-    name: neovim
-    state: present
-    path: "{{ home_dir }}/.linuxbrew/bin"
-  when: nvim_check.rc != 0
-  become: false
-  environment:
-    PATH: "{{ home_dir }}/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/bin:{{ ansible_env.PATH }}"
-    HOMEBREW_PREFIX: "{{ home_dir }}/.linuxbrew"
-    HOMEBREW_CELLAR: "{{ home_dir }}/.linuxbrew/Cellar"
-    HOMEBREW_REPOSITORY: "{{ home_dir }}/.linuxbrew/Homebrew"
+- name: Extract neovim to /usr/local
+  ansible.builtin.unarchive:
+    src: "/tmp/nvim-linux64.tar.gz"
+    dest: "/usr/local"
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+  become: true
+
+- name: Clean up neovim tarball
+  ansible.builtin.file:
+    path: "/tmp/nvim-linux64.tar.gz"
+    state: absent
+  become: true

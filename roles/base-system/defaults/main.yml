@@ -1,6 +1,6 @@
 ---
 # Default home directory
-home_dir: "{{ ansible_env.HOME }}"
+home_dir: "{{ ansible_facts['env']['HOME'] }}"
 
 # Tool versions
 neovim_version: "v0.10.2"

@@ -5,7 +5,7 @@ treesitter_version: "0.20.9"
 direnv_version: "2.33.0"
 
 # Kubernetes tools versions
-kubectl_version: "v1.29.0"
+kubectl_version: "v1.33.0"
 helm_version: "3.13.3"
 k9s_version: "0.31.5"
 kubecm_version: "v0.32.0"

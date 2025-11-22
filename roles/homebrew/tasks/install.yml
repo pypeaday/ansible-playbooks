@@ -1,41 +1,41 @@
 ---
 - name: Ensure .linuxbrew directory exists
   ansible.builtin.file:
-    path: "/home/{{ ansible_user_id }}/.linuxbrew"
+    path: "/home/{{ ansible_facts['user_id'] }}/.linuxbrew"
     state: directory
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
     mode: '0755'
 
 - name: Clone Homebrew GitHub repo
   ansible.builtin.git:
     repo: "{{ homebrew_git_repo }}"
-    dest: "/home/{{ ansible_user_id }}/.linuxbrew/Homebrew"
+    dest: "/home/{{ ansible_facts['user_id'] }}/.linuxbrew/Homebrew"
     version: "{{ homebrew_release }}"
-  become_user: "{{ ansible_user_id }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
   become: yes
 
 - name: Create bin directory for brew
   ansible.builtin.file:
-    path: "/home/{{ ansible_user_id }}/.linuxbrew/bin"
+    path: "/home/{{ ansible_facts['user_id'] }}/.linuxbrew/bin"
     state: directory
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
     mode: '0755'
 
 - name: Create a symbolic link for brew
   ansible.builtin.file:
-    src: "/home/{{ ansible_user_id }}/.linuxbrew/Homebrew/bin/brew"
-    dest: "/home/{{ ansible_user_id }}/.linuxbrew/bin/brew"
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
+    src: "/home/{{ ansible_facts['user_id'] }}/.linuxbrew/Homebrew/bin/brew"
+    dest: "/home/{{ ansible_facts['user_id'] }}/.linuxbrew/bin/brew"
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
     state: link
 
 - name: Initialize Homebrew
   ansible.builtin.shell: |
-    export PATH="/home/{{ ansible_user_id }}/.linuxbrew/bin:$PATH"
-    /home/{{ ansible_user_id }}/.linuxbrew/bin/brew update --force --quiet
-  become_user: "{{ ansible_user_id }}"
+    export PATH="/home/{{ ansible_facts['user_id'] }}/.linuxbrew/bin:$PATH"
+    /home/{{ ansible_facts['user_id'] }}/.linuxbrew/bin/brew update --force --quiet
+  become_user: "{{ ansible_facts['user_id'] }}"
   become: yes
   args:
     executable: /bin/bash

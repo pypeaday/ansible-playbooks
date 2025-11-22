@@ -1,14 +1,8 @@
 FROM fedora:latest
 
-# Install minimum requirements
-RUN dnf install -y \
-    python3 \
-    python3-pip \
-    pipx \
-    sudo \
-    git \
-    curl \
-    && dnf clean all
+# Install minimum requirements via repo bootstrap script
+COPY ./test/system-deps.sh /tmp/system-deps.sh
+RUN chmod +x /tmp/system-deps.sh && /tmp/system-deps.sh
 
 # Create test user
 RUN useradd -m -s /bin/bash testuser && \
@@ -20,13 +14,14 @@ WORKDIR /home/testuser
 
 WORKDIR /home/testuser/ansible-playbooks
 
-# Install Ansible using pipx
-RUN pipx install ansible
-
-# Add local bin to PATH
+# Add local bin to PATH (for uv + ansible installed by bootstrap.sh)
 ENV PATH="/home/testuser/.local/bin:${PATH}"
 
-# Copy playbooks
-COPY --chown=testuser:testuser . /home/testuser/ansible-playbooks/
+ # Copy playbooks
+ COPY --chown=testuser:testuser . /home/testuser/ansible-playbooks/
 
-CMD ["bash"]
+ # Run bootstrap script to install uv, ansible, just, etc.
+ RUN chmod +x /home/testuser/ansible-playbooks/bootstrap.sh && \
+     /home/testuser/ansible-playbooks/bootstrap.sh
+
+ CMD ["bash"]

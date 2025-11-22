@@ -30,38 +30,9 @@ else
   exit 1
 fi
 
-# Install Python3, pip, and pipx if not present
-install_python() {
-  log_info "Installing Python and dependencies..."
-  
-  case $OS in
-  "ubuntu" | "debian")
-    log_info "Updating package lists..."
-    sudo apt update
-    log_info "Installing Python packages..."
-    sudo apt install -y python3 python3-pip python3-venv curl git
-    ;;
-  "fedora")
-    log_info "Installing Python packages..."
-    sudo dnf install -y python3 python3-pip curl git
-    ;;
-  "arch")
-    log_info "Installing Python packages..."
-    sudo pacman -Sy --noconfirm python python-pip curl git
-    ;;
-  *)
-    log_error "Unsupported distribution: $OS"
-    log_info "Supported distributions: Ubuntu, Debian, Fedora, Arch"
-    exit 1
-    ;;
-  esac
-  
-  log_info "Python installation complete"
-}
-
-# Install uv (Python package manager)
+# Install uv
 install_uv() {
-  log_info "Installing uv Python package manager..."
+  log_info "Installing uv..."
   
   # Install uv
   if ! command -v uv >/dev/null 2>&1; then
@@ -170,7 +141,6 @@ main() {
   # Create temp directory for downloads
   mkdir -p /tmp/ansible-playbooks-setup
   
-  install_python
   install_uv
   install_ansible
   install_just

@@ -2,12 +2,20 @@
 set -euo pipefail
 
 # Default to Ubuntu if no distro specified
-DISTRO=${1:-ubuntu}
+DISTRO="ubuntu"
+
+if [[ $# -ge 1 ]]; then
+  if [[ "$1" == "--os" && $# -ge 2 ]]; then
+    DISTRO="$2"
+  else
+    DISTRO="$1"
+  fi
+fi
 
 echo "Testing playbooks on $DISTRO..."
 
 # Build the image
 docker build -t ansible-test-$DISTRO -f test/$DISTRO.Dockerfile .
 
-# Run the container with interactive shell
-docker run --rm -it ansible-test-$DISTRO
+# Run ansible playbook with real installs inside the container
+docker run --network host --rm ansible-test-$DISTRO bash -lc 'cd ~/ansible-playbooks && just base'

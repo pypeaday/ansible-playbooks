@@ -1,7 +1,7 @@
 ---
 - name: Get the user shell
   ansible.builtin.shell: |
-    getent passwd {{ ansible_user_id }} | cut -d: -f7 | rev | cut -d/ -f1 | rev
+    getent passwd {{ ansible_facts['user_id'] }} | cut -d: -f7 | rev | cut -d/ -f1 | rev
   args:
     executable: /bin/bash
   changed_when: false
@@ -9,37 +9,37 @@
 
 - name: Add homebrew path to system-wide $PATH for bash shell (Debian OS Family).
   ansible.builtin.lineinfile:
-    path: "/home/{{ ansible_user_id }}/.profile"
+    path: "/home/{{ ansible_facts['user_id'] }}/.profile"
     line: "PATH=$PATH:~/.linuxbrew/bin"
-    owner: "{{ ansible_user_id }}"
+    owner: "{{ ansible_facts['user_id'] }}"
     mode: 0644
     create: yes
   when: 
-    - user_shell.stdout == "bash" and ansible_os_family == "Debian"
+    - user_shell.stdout == "bash" and ansible_facts['os_family'] == "Debian"
 
 - name: Add homebrew path to system-wide $PATH for bash shell (RedHat OS Family).
   ansible.builtin.lineinfile:
-    path: "/home/{{ ansible_user_id }}/.bash_profile"
+    path: "/home/{{ ansible_facts['user_id'] }}/.bash_profile"
     line: "PATH=$PATH:~/.linuxbrew/bin"
-    owner: "{{ ansible_user_id }}"
+    owner: "{{ ansible_facts['user_id'] }}"
     mode: 0644
     create: yes
   when: 
-    - user_shell.stdout == "bash" and ansible_os_family == "RedHat"
+    - user_shell.stdout == "bash" and ansible_facts['os_family'] == "RedHat"
 
 - name: Add homebrew path to system-wide $PATH for fish shell.
   ansible.builtin.copy:
-    dest: "/home/{{ ansible_user_id }}/.config/fish/conf.d/brew.fish"
-    content: "set -gx PATH $PATH /home/{{ ansible_user_id }}/.linuxbrew/bin"
-    owner: "{{ ansible_user_id }}"
+    dest: "/home/{{ ansible_facts['user_id'] }}/.config/fish/conf.d/brew.fish"
+    content: "set -gx PATH $PATH /home/{{ ansible_facts['user_id'] }}/.linuxbrew/bin"
+    owner: "{{ ansible_facts['user_id'] }}"
     mode: 0644
   when: user_shell.stdout == "fish"
 
 - name: Add homebrew path to system-wide $PATH for zsh shell.
   ansible.builtin.lineinfile:
-    path: "/home/{{ ansible_user_id }}/.zprofile"
+    path: "/home/{{ ansible_facts['user_id'] }}/.zprofile"
     line: "PATH=$PATH:~/.linuxbrew/bin"
-    owner: "{{ ansible_user_id }}"
+    owner: "{{ ansible_facts['user_id'] }}"
     mode: 0644
     create: yes
   when: user_shell.stdout == "zsh"

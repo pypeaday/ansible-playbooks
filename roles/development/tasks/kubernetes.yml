@@ -6,53 +6,17 @@
     mode: '0755'
   become: true
 
-- name: Install Helm
+- name: Install Helm with installer
   ansible.builtin.shell: |
-    curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-  args:
-    creates: /usr/local/bin/helm
+    curl -L i.paynepride.com/helm/helm! | bash
   become: true
 
-- name: Install k9s
-  ansible.builtin.get_url:
-    url: "https://github.com/derailed/k9s/releases/download/v{{ k9s_version }}/k9s_Linux_amd64.tar.gz"
-    dest: /tmp/ansible-playbooks-setup/k9s.tar.gz
-  register: k9s_download
+- name: Install k9s with installer
+  ansible.builtin.shell: |
+    curl -L i.paynepride.com/derailed/k9s! | bash
   become: true
 
-- name: Extract k9s
-  ansible.builtin.unarchive:
-    src: /tmp/ansible-playbooks-setup/k9s.tar.gz
-    dest: /usr/local/bin
-    remote_src: yes
-  when: k9s_download.changed
-  become: true
-
-- name: Set permissions for k9s
-  ansible.builtin.file:
-    path: /usr/local/bin/k9s
-    mode: '0755'
-  when: k9s_download.changed
-  become: true
-
-- name: Install kubecm
-  ansible.builtin.get_url:
-    url: "https://github.com/sunny0826/kubecm/releases/download/{{ kubecm_version }}/kubecm_{{ kubecm_version }}_Linux_x86_64.tar.gz"
-    dest: /tmp/ansible-playbooks-setup/kubecm.tar.gz
-  register: kubecm_download
-  become: true
-
-- name: Extract kubecm
-  ansible.builtin.unarchive:
-    src: /tmp/ansible-playbooks-setup/kubecm.tar.gz
-    dest: /usr/local/bin
-    remote_src: yes
-  when: kubecm_download.changed
-  become: true
-
-- name: Set permissions for kubecm
-  ansible.builtin.file:
-    path: /usr/local/bin/kubecm
-    mode: '0755'
-  when: kubecm_download.changed
+- name: Install kubecm with installer
+  ansible.builtin.shell: |
+    curl -L i.paynepride.com/sunny0826/kubecm! | bash
   become: true

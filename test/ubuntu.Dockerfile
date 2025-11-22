@@ -1,15 +1,8 @@
 FROM ubuntu:latest
 
-# Install minimum requirements
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    python3-venv \
-    pipx \
-    sudo \
-    git \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+# Install minimum requirements via repo bootstrap script
+COPY ./test/system-deps.sh /tmp/system-deps.sh
+RUN chmod +x /tmp/system-deps.sh && /tmp/system-deps.sh
 
 # Create test user
 RUN useradd -m -s /bin/bash testuser && \
@@ -21,10 +14,7 @@ WORKDIR /home/testuser
 
 WORKDIR /home/testuser/ansible-playbooks
 
-# Install Ansible using pipx
-RUN pipx install ansible
-
-# Add local bin to PATH
+# Add local bin to PATH (for uv + ansible installed by bootstrap.sh)
 ENV PATH="/home/testuser/.local/bin:${PATH}"
 
 # Bootstrap
