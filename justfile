@@ -19,6 +19,10 @@ server:
 dev:
     @just _run --tags "base,brew,neovim,git,ssh,python,shell,dev" -e setup_tailscale=true -e install_development_tools=true -e install_docker=true -e install_python_uv=true -e setup_ssh_keys=true
 
+# Refresh - pull binaries of dev tools
+refresh:
+    @just _run --tags "dev" -e setup_tailscale=false -e install_development_tools=false -e install_docker=false -e install_python_uv=false -e setup_ssh_keys=false
+
 # Setup shell configuration
 shell:
     @just _run --tags "brew,neovim,shell"

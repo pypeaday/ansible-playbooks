@@ -58,14 +58,15 @@ just all
 - `just ssh` - Setup SSH key management
 - `just shell` - Setup shell configuration (Zsh + Oh My Zsh)
 - `just git` - Setup git configuration
-- `just base` - Install base system packages
-- `just brew` - Setup homebrew
-- `just neovim` - Setup neovim
+- `just base` - Install base system packages (includes Homebrew and Neovim)
+- `just brew` - Setup Homebrew
+- `just neovim` - Install Neovim editor
 
 ### Utilities
 - `just check` - Check syntax only
 - `just ubuntu` - Test with Ubuntu
 - `just fedora` - Test with Fedora
+- `just arch` - Test with Arch Linux
 
 ## 🔧 Roles
 
@@ -121,7 +122,7 @@ just base    # Install base system packages (includes brew and neovim)
 just git     # Setup git configuration
 just shell   # Setup shell configuration (includes brew and neovim)
 just brew    # Install Homebrew
-just neovim  # Install Neovim via Homebrew
+just neovim  # Install Neovim editor from GitHub releases
 ```
 
 ### Testing
@@ -135,11 +136,11 @@ just arch    # Test on Arch Linux
 
 ## Role Dependencies
 
-The roles are executed in the following order to ensure proper dependencies:
-1. `base-system`: Core system packages
-2. `homebrew`: Package manager (required for Neovim)
-3. `neovim`: Text editor installation
-4. Other roles (git, shell, development, docker)
+The roles are executed in the following order by `site.yml` to ensure proper dependencies:
+1. `homebrew`: Package manager (optional, used for additional tools and formulae)
+2. `neovim`: Text editor installation (from GitHub releases)
+3. `base-system`: Core system packages
+4. Other roles (git, ssh-keys, tailscale, python-uv, shell, dotfiles, development, docker, cockpit)
 
 ## Inventory Structure
 
@@ -157,10 +158,14 @@ The roles are executed in the following order to ensure proper dependencies:
 ## Variables
 
 Key variables that control role execution:
-- `install_development_tools`: Enable development tools installation
-- `install_docker`: Enable Docker installation
-- `setup_shell`: Enable shell configuration
-- `setup_monitoring`: Enable system monitoring tools
+- `install_development_tools` – enable development tools (`development` role)
+- `install_docker` – enable Docker roles (`geerlingguy.docker` and `docker` roles)
+- `setup_shell` – enable shell configuration (`shell-setup` role)
+- `setup_ssh_keys` – enable SSH key management (`ssh-keys` role)
+- `setup_tailscale` – enable Tailscale (`tailscale` role)
+- `install_python_uv` – enable Python via uv (`python-uv` role)
+- `setup_dotfiles` – enable dotfiles setup (`dotfiles` role)
+- `install_cockpit` – enable Cockpit (`cockpit` role)
 
 ## Requirements
 
@@ -174,4 +179,4 @@ Key variables that control role execution:
 - Docker installation requires root privileges
 - Some roles (like development) are opt-in and need to be explicitly enabled
 - The bootstrap script installs all necessary dependencies
-- Neovim is installed via Homebrew to ensure consistency across systems and containers
+- Neovim is installed from the official GitHub releases tarball into `/usr/local` to ensure consistency across systems and containers
