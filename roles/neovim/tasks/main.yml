@@ -1,7 +1,7 @@
 ---
 - name: Download neovim tarball from GitHub releases
   ansible.builtin.get_url:
-    url: "https://github.com/neovim/neovim/releases/download/{{ neovim_version }}/nvim-linux64.tar.gz"
+    url: "https://github.com/neovim/neovim/releases/download/{{ neovim_version }}/nvim-linux-x86_64.tar.gz"
     dest: "/tmp/nvim-linux64.tar.gz"
     mode: '0644'
   become: true
